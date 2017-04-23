@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="geolab" ng-controller="AppCtrl">
+    <head>
+        <title ng-bind="pageTitle"></title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=4">
+
+        <base href="/" />
+
+        <link rel="shortcut icon" href="/assets_web/img/favicon.png" />
+
+
+        <!--&lt;!&ndash; compiled CSS &ndash;&gt;<% styles.forEach( function ( file ) { %>-->
+        <!--<link rel="stylesheet" type="text/css" href="/<%= file %>" /><% }); %>-->
+        <link ng-href="/assets_web/fonts/font-awesome-4.6.3/css/font-awesome.css" rel="stylesheet">
+
+        <!--&lt;!&ndash; compiled JavaScript &ndash;&gt;<% scripts.forEach( function ( file ) { %>-->
+        <!--<script type="text/javascript" src="/<%= file %>"></script><% }); %>-->
+
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+        <script src="js/scripts.min.js"></script>
+
+        <!-- inject:js -->
+        <script src="app/app.js"></script>
+        <script src="common/directive/open-file/open-file.js"></script>
+        <script src="common/directive/particles-js/particles-js.js"></script>
+        <script src="app/landing/landing.js"></script>
+        <script src="app/manager/footer/footer.js"></script>
+        <script src="app/manager/header/header.js"></script>
+        <script src="app/manager/home/home.js"></script>
+        <script src="app/manager/manager.js"></script>
+        <script src="common/model/utils/responseStatus/responseStatus.js"></script>
+        <script src="common/notifications/appNotificationsService.js"></script>
+        <script src="common/notifications/modalService/modalService.js"></script>
+        <script src="common/remote/api/api.js"></script>
+        <!-- endinject -->
+  </head>
+
+  <body>
+  <!--<a ui-sref="app.geolab">Home</a>-->
+  <!--<a ui-sref="landing">landing</a>-->
+    <div ui-view class="h-full"></div>
+    <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-top-right'}"></toaster-container>
+  </body>
+</html>

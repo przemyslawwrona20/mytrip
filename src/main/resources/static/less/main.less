@@ -1,0 +1,35 @@
+
+@import '../vendor/bootstrap/less/bootstrap.less';
+
+@import 'variables.less';
+@import 'app.less';
+@import 'theme/app.less';
+@import 'theme/md.less';
+
+@import '../app/signIn/signIn.less';
+@import '../app/signUp/signUp.less';
+@import '../app/signPwd/signPwd.less';
+@import '../app/landing/landing.less';
+@import '../app/manager/manager.less';
+@import '../app/manager/home/home.less';
+@import '../app/manager/header/header.less';
+@import '../app/manager/footer/footer.less';
+@import '../common/directive/particles-js/particles-js.less';
+
+body {
+  font-family: @sansFontFamily;
+}
+
+@icon-font-path: "../assets_web/fonts/glyphicons/";
+
+@font-face {
+  font-family: 'WorkSans';
+  //src: url('../assets_web/fonts/Work_Sans/WorkSans-Thin.ttf');
+  //src: url('../assets_web/fonts/Work_Sans/WorkSans-ExtraLight.ttf');
+  src: url('../assets_web/fonts/Work_Sans/WorkSans-Light.ttf');
+  //src: url('../assets_web/fonts/Work_Sans/WorkSans-Medium.ttf');
+
+  //font-family: 'Glyphicons Halflings';
+  //src: url('../assets_web/fonts/glyphicons/glyphicons-halflings-regular.eot');
+  //src: url('../assets_web/fonts/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
