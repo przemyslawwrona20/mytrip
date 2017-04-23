@@ -15,5 +15,15 @@
         });
     }])
     .controller('HomeCtrl', ['$scope', '$state', function ($scope, $state) {
+
+        $scope.points = [{
+            id: 0,
+            name: '',
+            coordinates: {
+                x: 5000,
+                y: 6000
+            },
+            photoPath: ''
+        }]
     }]);
 })( window, window.angular );

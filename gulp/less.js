@@ -3,7 +3,7 @@ var less = require('gulp-less');
 var path = require('path');
 
 gulp.task('less', function () {
-    return gulp.src('src/main/static/less/main.less')
+    return gulp.src('src/main/webapp/less/main.less')
         .pipe(less())
-        .pipe(gulp.dest('src/main/static/css'));
+        .pipe(gulp.dest('src/main/webapp/css'));
 });
