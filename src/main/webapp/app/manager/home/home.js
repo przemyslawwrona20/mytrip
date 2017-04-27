@@ -1,11 +1,11 @@
 (function ( window, angular, undefined ) {
 
-    angular.module('geolab.view.home', [
+    angular.module('mytrip.view.home', [
         'ui.router'
     ])
     .config(['$stateProvider', function config($stateProvider) {
         $stateProvider.state('app.home', {
-            url: '/',
+            url: '',
             views: {
                 'manager@app': {
                     controller: 'HomeCtrl',

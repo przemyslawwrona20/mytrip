@@ -1,6 +1,6 @@
 (function (window, angular, undefined) {
 
-    angular.module('geolab.notifications.appNotificationsService', [])
+    angular.module('mytrip.notifications.appNotificationsService', [])
 
         .factory('AppNotificationsService', ['$rootScope', function ($rootScope) {
             return {

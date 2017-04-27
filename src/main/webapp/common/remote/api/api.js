@@ -1,8 +1,8 @@
 (function ( window, angular, undefined ) {
 
-    angular.module('geolab.remote.api', [
-    'geolab.auth.userAuthService',
-    'geolab.model.responseStatus'
+    angular.module('mytrip.remote.api', [
+    'mytrip.auth.userAuthService',
+    'mytrip.model.responseStatus'
 ])
     .factory('API', ['$http', '$q', 'UserAuthService', 'ResponseStatus', function ($http, $q, UserAuthService, ResponseStatus) {
 

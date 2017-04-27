@@ -1,5 +1,5 @@
 (function (window, angular, undefined) {
-    angular.module('geolab.directives.particles', [])
+    angular.module('mytrip.directives.particles', [])
         .directive('particles-js', function ($window) {
             return {
                 restrict: 'A',

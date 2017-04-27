@@ -1,6 +1,6 @@
 (function ( window, angular, undefined ) {
 
-    angular.module('geolab.model.responseStatus', [
+    angular.module('mytrip.model.responseStatus', [
 ])
     .factory('ResponseStatus', [ function () {
         function ResponseStatus(status, errorMessage, objectId, extra) {

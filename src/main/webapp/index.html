@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="geolab" ng-controller="AppCtrl">
+<html ng-app="mytrip" ng-controller="AppCtrl">
     <head>
         <title ng-bind="pageTitle"></title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -30,6 +30,8 @@
         <script src="app/manager/footer/footer.js"></script>
         <script src="app/manager/header/header.js"></script>
         <script src="app/manager/home/home.js"></script>
+        <script src="app/manager/home/trip/trip.js"></script>
+        <script src="app/manager/home/tripDetail/tripDetail.js"></script>
         <script src="app/manager/manager.js"></script>
         <script src="common/model/utils/responseStatus/responseStatus.js"></script>
         <script src="common/notifications/appNotificationsService.js"></script>
@@ -39,7 +41,7 @@
   </head>
 
   <body>
-  <!--<a ui-sref="app.geolab">Home</a>-->
+  <!--<a ui-sref="app.mytrip">Home</a>-->
   <!--<a ui-sref="landing">landing</a>-->
     <div ui-view class="h-full"></div>
     <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-top-right'}"></toaster-container>

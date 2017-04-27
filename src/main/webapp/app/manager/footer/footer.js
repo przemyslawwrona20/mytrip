@@ -1,6 +1,6 @@
 (function ( window, angular, undefined ) {
 
-    angular.module('geolab.view.footer', [
+    angular.module('mytrip.view.footer', [
         'ui.router'
     ])
 

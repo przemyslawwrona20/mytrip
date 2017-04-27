@@ -1,7 +1,7 @@
 describe('ResponseStatus tests', function () {
     var ResponseStatus;
 
-    beforeEach(module("geolab.model.responseStatus"));
+    beforeEach(module("mytrip.model.responseStatus"));
 
     beforeEach(inject(function (_ResponseStatus_) {
 

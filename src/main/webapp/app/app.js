@@ -1,15 +1,17 @@
 (function (window, angular, undefined) {
-    angular.module('geolab', [
+    angular.module('mytrip', [
         // 'templates-app',
         // 'templates-common',
         'ui.router',
         'ui.bootstrap',
 
-        'geolab.view.landing',
-        'geolab.view.manager',
-        'geolab.view.header',
-        'geolab.view.home',
-        'geolab.view.footer',
+        'mytrip.view.landing',
+        'mytrip.view.manager',
+        'mytrip.view.header',
+        'mytrip.view.home',
+        'mytrip.view.footer',
+        'mytrip.view.trip',
+        'mytrip.view.tripDetail',
         'jcs-autoValidate',
         'ngFileUpload',
         'xeditable',
@@ -46,7 +48,7 @@
             var transitionToState = STATES.homeState;
             var transitionToParams = {};
 
-            $scope.pageTitle = "GeoLAB";
+            $scope.pageTitle = "mytrip";
 
             $rootScope.$on('event:auth-loginConfirmed', function () {
                 $state.go(transitionToState, transitionToParams);

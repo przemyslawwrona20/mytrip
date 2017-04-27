@@ -1,5 +1,5 @@
 (function (window, angular, undefined) {
-    angular.module('geolab.directives.openFile', [])
+    angular.module('mytrip.directives.openFile', [])
         .constant('FILE_TYPE', {
             json: 'json',
             txt: 'txt'

@@ -1,6 +1,6 @@
 (function (window, angular, undefined) {
 
-    angular.module('geolab.notifications.modalService', [
+    angular.module('mytrip.notifications.modalService', [
         'ui.bootstrap'
     ])
         .factory('ModalService', ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {

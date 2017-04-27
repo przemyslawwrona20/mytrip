@@ -1,6 +1,6 @@
 (function ( window, angular, undefined ) {
 
-    angular.module('geolab.view.landing', [
+    angular.module('mytrip.view.landing', [
         'ui.router'
     ])
     .config(function config($stateProvider) {
