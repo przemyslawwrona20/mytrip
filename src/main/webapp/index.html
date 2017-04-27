@@ -9,7 +9,6 @@
 
         <link rel="shortcut icon" href="/assets_web/img/favicon.png" />
 
-
         <!--&lt;!&ndash; compiled CSS &ndash;&gt;<% styles.forEach( function ( file ) { %>-->
         <!--<link rel="stylesheet" type="text/css" href="/<%= file %>" /><% }); %>-->
         <link ng-href="/assets_web/fonts/font-awesome-4.6.3/css/font-awesome.css" rel="stylesheet">
@@ -36,7 +35,9 @@
         <script src="common/notifications/modalService/modalService.js"></script>
         <script src="common/remote/api/api.js"></script>
         <!-- endinject -->
-  </head>
+        <script src="js/scripts.min.js"></script>
+
+    </head>
 
   <body>
   <!--<a ui-sref="app.mytrip">Home</a>-->
@@ -44,6 +45,7 @@
     <div ui-view class="h-full"></div>
     <toaster-container toaster-options="{'close-button': true, 'position-class': 'toast-top-right'}"></toaster-container>
   </body>
-
     <script src="js/scripts.min.js"></script>
+
+
 </html>
