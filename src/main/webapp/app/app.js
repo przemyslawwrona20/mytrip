@@ -10,7 +10,7 @@
         'mytrip.view.header',
         'mytrip.view.home',
         'mytrip.view.footer',
-        'mytrip.view.trip',
+        'mytrip.trip',
         'mytrip.view.tripDetail',
         'jcs-autoValidate',
         'ngFileUpload',
@@ -29,6 +29,9 @@
 
                 // $urlMatcherFactoryProvider.strictMode(false);
                 $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
+                // $httpProvider.defaults.withCredentials = true;
+                // $httpProvider.defaults.useXDomain = true;
+                // delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
                 $locationProvider.html5Mode(false);
             }])
