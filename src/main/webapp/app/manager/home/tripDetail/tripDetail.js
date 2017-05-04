@@ -1,20 +1,13 @@
-(function ( window, angular, undefined ) {
+(function () {
 
-    angular.module('mytrip.view.tripDetail', [
-        'ui.router'
-    ])
-        .config(['$stateProvider', function config($stateProvider) {
-            $stateProvider.state('app.home.tripDetail', {
-                url: '/trip/:tripId',
-                views: {
-                    'home@app.home': {
-                        controller: 'TripDetailCtrl',
-                        templateUrl: 'app/manager/home/tripDetail/tripDetail.tpl.html'
-                    }
-                }
-            });
-        }])
-        .controller('TripDetailCtrl', ['$scope', '$state', function ($scope, $state) {
+    angular.module('mytrip.view.tripDetail')
 
+        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', function ($scope, $state, ReportRemoteService, trip) {
+            $scope.trip = trip.data;
+
+            $scope.removeTrip = function (tripId) {
+                // ReportRemoteService.removeTrip(tripId)
+                $state.go('app.home.trip')
+            }
         }]);
-})( window, window.angular );
+})();
