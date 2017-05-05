@@ -3,6 +3,8 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
+var angularFilesort = require('gulp-angular-filesort');
+var naturalSort = require('gulp-natural-sort');
 
 gulp.task('minify-js', function () {
 
@@ -42,7 +44,21 @@ gulp.task('minify-js', function () {
         jsDest = 'src/main/webapp/js';
 
 
-    return gulp.src(jsFiles)
+    var sources = ['src/main/webapp/app/**/*.js',
+        '!src/main/webapp/app/**/*.spec.js',
+        'src/main/webapp/common/**/*.js',
+        '!src/main/webapp/common/**/*.spec.js'];
+
+    gulp.src(sources)
+        .pipe(naturalSort('desc'))
+        .pipe(angularFilesort())
+        .pipe(concat('mytrip.js'))
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('mytrip.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsDest));
+
+    gulp.src(jsFiles)
         .pipe(concat('scripts.js'))
         .pipe(gulp.dest(jsDest))
         .pipe(rename('scripts.min.js'))
