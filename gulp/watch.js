@@ -3,5 +3,6 @@ var gulp = require('gulp'),
 
 
 gulp.task('watch', function () {
-    gulp.watch('src/main/webapp/app/**/*.js', ['dev']);
+    gulp.watch(['src/main/webapp/app/**/*.js',
+        'src/main/webapp/app/**/*.less'], ['inject', 'less', 'minify-js', 'minify-css']);
 });
