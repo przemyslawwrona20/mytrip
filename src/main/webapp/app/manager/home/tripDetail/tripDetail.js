@@ -7,11 +7,12 @@
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
-            }
+            };
             var vm = this;
             NgMap.getMap().then(function(map){
                 vm.map = map;
                 vm.map.addListener('click',function(e){
+                    console.log(e);
                     placeMarkerAndPanTo(e.latlng,vm.map);
                 });
             });

@@ -15,7 +15,7 @@
                 photoPath: ''
             }];
 
-            $scope.trips = trips.data;
+            $scope.trips = trips.data.results;
 
             $scope.getDetails = function (tripId) {
                 $state.go('app.home.tripDetail', {tripId: tripId})

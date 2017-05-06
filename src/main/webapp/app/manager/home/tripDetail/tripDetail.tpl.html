@@ -6,5 +6,24 @@
         <button type="button" class="btn btn-danger pull-right" ng-click="removeTrip()">Usuń wycieczkę</button>
     </div>
     <div class="col-md-12">{{trip}}</div>
-    <div class="col-md-12">Tabela z punktami</div>
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Data</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="point in trip.points" ng-click="getDetails(trip.id)">
+                <td>{{point.elevation}}</td>
+                <td>{{point.timestamp}}</td>
+                <td>{{point}}</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
