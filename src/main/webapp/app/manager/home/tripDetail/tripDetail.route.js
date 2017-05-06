@@ -15,6 +15,10 @@
                     trip: ['ReportRemoteService', '$stateParams', function (ReportRemoteService, $stateParams) {
                         return ReportRemoteService.getTrip($stateParams.tripId);
                     }]
+                },
+                onEnter: function($stateParams, $state){
+                    if($stateParams.tripId === undefined || $stateParams.tripId === '')
+                        $state.go('app.home.trip');
                 }
             });
         }])
