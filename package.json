@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-angular-filesort": "^1.1.1",    
+    "gulp-angular-filesort": "^1.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-config": "^0.3.0",
     "gulp-inject": "^4.1.0",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "gulp-less": "^3.3.0",
+    "gulp-watch": "^4.3.11",
     "path": "^0.12.7",
     "require-dir": "^0.3.1",
     "requiredir": "^1.0.7"
