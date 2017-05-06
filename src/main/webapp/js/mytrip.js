@@ -501,15 +501,13 @@
 (function () {
     angular.module('mytrip.view.tripDetail')
 
-        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', function ($scope, $state, ReportRemoteService, trip) {
+        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip','NgMap', function ($scope, $state, ReportRemoteService, trip,NgMap) {
             $scope.trip = trip.data;
 
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
             }
-        }])
-        .controller('MapCtrl',['$scope','$http','$interval','NgMap', function($scope, $http, $interval,NgMap) {
             var vm = this;
             NgMap.getMap().then(function(map){
                 vm.map = map;
