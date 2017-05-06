@@ -1,5 +1,4 @@
 (function () {
-
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', function ($scope, $state, ReportRemoteService, trip) {
@@ -9,5 +8,5 @@
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
             }
-        }]);
+        }])
 })();
