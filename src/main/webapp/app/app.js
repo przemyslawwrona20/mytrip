@@ -16,7 +16,8 @@
         'ngFileUpload',
         'xeditable',
         'ngLodash',
-        'ngProgress'
+        'ngProgress',
+        'ngMap'
     ])
 
         .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$urlMatcherFactoryProvider', '$locationProvider',
