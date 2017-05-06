@@ -1,6 +1,8 @@
 <div class="row">
-    <div class="col-md-12">Mapa z google Api</div>
-        <ng-map center='current-position' zoom="10"></ng-map>
+    <div  class="col-md-12">Mapa z google Api</div>
+        <ng-map id="map"
+                ng-controller="MapCtrl"
+                center='current-position' zoom="10"></ng-map>
     <!--<div class="col-md-12">Galeria zdjęć</div>-->
     <div class="col-md-12">
         <button type="button" class="btn btn-danger pull-right" ng-click="removeTrip()">Usuń wycieczkę</button>

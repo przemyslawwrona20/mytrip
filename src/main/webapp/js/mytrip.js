@@ -499,20 +499,6 @@
     ])
 })();
 (function () {
-    // var lat,lng;
-    // if(navigator.geolocation){
-    //     navigator.geolocation.getCurrentPosition(getPosition)
-    // }
-    // else{
-    //     lat = 50;
-    //     lng = 50;
-    // }
-    //
-    // function getPosition(position) {
-    //     lng = position.coords.longitude;
-    //     lat = position.coords.latitude;
-    // }
-
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', function ($scope, $state, ReportRemoteService, trip) {
@@ -523,29 +509,26 @@
                 $state.go('app.home.trip')
             }
         }])
+        .controller('MapCtrl',['$scope','$http','$interval','NgMap', function($scope, $http, $interval,NgMap) {
+            var vm = this;
+            NgMap.getMap().then(function(map){
+                vm.map = map;
+                vm.map.addListener('click',function(e){
+                    placeMarkerAndPanTo(e.latlng,vm.map);
+                });
+            });
+            $scope.markers = [];
 
-    
-    // .directive('myMaps', function(){
-    //     return {
-    //         restrict: 'E',
-    //         template: '<div></div>',
-    //         replace:true,
-    //         link:function(scope,element,attrs){
-    //             var currentLatLng = new google.maps.LatLng(lat, lng);
-    //             var zoomSize = 8;
-    //
-    //             var mapOptions= {
-    //                 cetner: currentLatLng,
-    //                 zoom: zoomSize,
-    //                 mapTypeId: 'roadmap'
-    //             };
-    //
-    //             var map = new google.maps.Map($("#map-canvas"),
-    //             mapOptions);
-    //         }
-    // }
-    // });
 
+            function placeMarkerAndPanTo(latLng, map){
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                });
+                $scope.markers.push(marker);
+                vm.map.panTo(latLng);
+            }
+        }]);
 })();
 
 (function () {
