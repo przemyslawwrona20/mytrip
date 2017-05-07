@@ -8,8 +8,6 @@
             $scope.trip = trip.data;
 
             var markerId = 0;
-            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            var labelIndex = 0;
 
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
@@ -25,7 +23,6 @@
 
             NgMap.getMap().then(function (map) {
                 if ($scope.trip.points.length > 0) {
-                    // loadExistingPoints($scope.map);
                     markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
                 }
                 $scope.map = map;
@@ -34,47 +31,24 @@
                 });
             });
 
-            function loadExistingPoints(map) {
-                for (var i = 0; i < $scope.trip.points.length; i++) {
-                    var latLng = new google.maps.LatLng($scope.trip.points[i].latitude, $scope.trip.points[i].longtitude);
-                    placeMarkerOnLoad(latLng, map, $scope.trip.points[i]);
-                }
-                $scope.map.panTo(latLng);
-
-            }
-
-            function placeMarkerOnLoad(latLng, map, tripPoint) {
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    label: labels[labelIndex++ % labels.length],
-                    animation: google.maps.Animation.DROP,
-                    map: map
-                });
-                tripPoint.marker = marker;
-                google.maps.event.addListener(marker, 'dblclick', function () {
-                    removeMarker(tripPoint.id);
-                });
-            }
-
             function placeMarkerAndPanTo(latLng, map) {
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    label: labels[labelIndex++ % labels.length],
-                    animation: google.maps.Animation.DROP,
-                    map: map
-                });
+                // var marker = new google.maps.Marker({
+                //     position: latLng,
+                //     map: map
+                // });
 
-                google.maps.event.addListener(marker, 'dblclick', function () {
-                    removeMarker(marker.Id);
-                });
+                // google.maps.event.addListener(marker, 'dblclick', function () {
+                //     removeMarker(marker.Id);
+                // });
+                var marker={};
                 marker.Id = markerId;
 
                 $scope.trip.points.push({
                     id: marker.Id,
-                    latitude: marker.position.lat(),
-                    longtitude: marker.position.lng(),
+                    latitude: latLng.lat(),
+                    longtitude: latLng.lng(),
                     timestamp: getTime(),
-                    marker: marker
+                    //marker: marker
                 });
 
                 markerId++;

@@ -1,10 +1,14 @@
 <div class="row">
     <div class="col-md-12">
         <div>{{trip}}</div>
+        <div>{{center}}</div>
     </div>
     <div class="col-md-12">
-        <ng-map id="map" center="{{center}}" zoom="{{zoom}}">
-            <marker ng-repeat="point in trip.points" position="[{{point.latitude}}, {{point.longtitude}}]"></marker>
+        <ng-map id="map" center="{{center}}" zoom="10">
+            <marker ng-repeat="point in trip.points"
+                    position="[{{point.latitude}}, {{point.longtitude}}]"
+                    on-
+            ></marker>
         </ng-map>
     </div>
     <!--<div class="col-md-12">Galeria zdjęć</div>-->
