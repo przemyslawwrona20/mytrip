@@ -7,7 +7,7 @@
         <ng-map id="map" center="{{center}}" zoom="10" on-click="addPoint()">
             <marker ng-repeat="point in trip.points"
                     position="[{{point.latitude}}, {{point.longtitude}}]"
-                    on-click="removePoint(point.id)"
+                    on-click="removeMarker(point.id)"
             ></marker>
         </ng-map>
     </div>

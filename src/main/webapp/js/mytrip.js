@@ -538,7 +538,12 @@
                 $scope.trip.points.push({latitude: latLng.lat(), longtitude: latLng.lng()});
             };
 
+            $scope.removeMarker = function (event, pointId) {
+                $scope.removePoint(pointId);
+            };
+
             $scope.removePoint = function (pointId) {
+                console.log(pointId);
                 lodash.remove($scope.trip.points, {id: pointId});
             };
 
