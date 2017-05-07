@@ -107,7 +107,17 @@
             }
 
             function calcZoom() {
-                return 10;
+                if(lodash.size($scope.trip.points) <= 1) return 10;
+
+                var maxLat = lodash.maxBy($scope.trip.points, function(point) { return Number(point.latitude); });
+                var minLat = lodash.minBy($scope.trip.points, function(point) { return Number(point.latitude); });
+                var maxLng = lodash.maxBy($scope.trip.points, function(point) { return Number(point.longtitude); });
+                var minLng = lodash.minBy($scope.trip.points, function(point) { return Number(point.longtitude); });
+
+                var latZoom = 180 / (Math.abs(maxLat.latitude) + Math.abs(minLat.latitude));
+                var lngZoom = 360 / (Math.abs(maxLng.longtitude) + Math.abs(minLng.longtitude));
+
+                return lodash.min([lodash.ceil(latZoom), lodash.ceil(lngZoom)]);
             }
         }]);
 })();
