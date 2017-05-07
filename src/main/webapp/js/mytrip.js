@@ -526,23 +526,10 @@
                 $state.go('app.home.trip')
             };
 
-            $scope.addPoint = function (event) {
-
-                var latLng = event.latLng;
-                getElevation(latLng, addMarker);
+            $scope.addPoint = function (event, callback) {
+                getElevation(event.latLng, addMarker);
             };
 
-            function addMarker(latLng, elevation){
-                $scope.trip.points.push({
-                    id: markerId,
-                    timestamp: getTime(),
-                    elevation: elevation,
-                    latitude: latLng.lat(),
-                    longtitude: latLng.lng()
-                });
-
-                markerId++;
-            }
             $scope.removeMarker = function (event, pointId) {
                 $scope.removePoint(pointId);
             };
@@ -557,12 +544,20 @@
                     $scope.theWaypoints = [];
                     if($scope.trip.points.length > 1 ){
                         for (var i = 1; i < $scope.trip.points.length - 1; i++ ){
+                        var latitude=$scope.trip.points[i].latitude;
+                        var longtitude =$scope.trip.points[i].longtitude;
+                            if(typeof latitude === "string" || latitude instanceof String) {
+                                latitude = parseFloat(latitude);
+                            }
+                            if(typeof longtitude === "string" || longtitude instanceof String) {
+                                longtitude = parseFloat(longtitude);
+                            }
                             var obj = {
                                 location:{
-                                    lat: $scope.trip.points[i].latitude,
-                                    lng: $scope.trip.points[i].longtitude
+                                    lat: latitude,
+                                    lng: longtitude
                                 },
-                                stopover: true
+                                stopover: false
                             };
                             $scope.theWaypoints.push(obj);
                         }
@@ -577,7 +572,6 @@
                 var date = moment().format("YYYY-MM-DD[T]HH:mm:ss[Z]");
                 return date;
             }
-
             function getElevation(latLng, callback){
                 var locations = [];
                 locations.push(latLng);
@@ -589,6 +583,17 @@
                 });
             }
 
+            function addMarker(latLng, elevation){
+                $scope.trip.points.push({
+                    id: markerId,
+                    timestamp: getTime(),
+                    elevation: elevation,
+                    latitude: latLng.lat(),
+                    longtitude: latLng.lng()
+                });
+
+                markerId++;
+            }
             function calcCenter() {
                 var center = [0.0, 0.0];
                 lodash.forEach($scope.trip.points, function (point) {
