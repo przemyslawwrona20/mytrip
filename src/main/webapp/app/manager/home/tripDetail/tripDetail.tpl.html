@@ -28,16 +28,18 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Nazwa</th>
+                <th>Lp</th>
                 <th>Data</th>
+                <th>Współrzędne</th>
                 <th></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="point in trip.points">
-                <td>{{point.elevation}}</td>
+                <td>{{point.id}}</td>
                 <td>{{point.timestamp}}</td>
+                <td><span class="nowrap">&Phi; {{point.latitude}}</span> <span class="nowrap">&lambda; {{point.longtitude}}</span></td>
                 <td>{{point}}</td>
                 <td>
                     <a class="btn btn-link" ng-click="removePoint(point.id)">

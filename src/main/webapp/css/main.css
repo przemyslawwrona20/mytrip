@@ -6054,6 +6054,9 @@ h3.app-title {
 #ngProgress {
   background-color: #779c11 !important;
 }
+.nowrap {
+  white-space: nowrap ;
+}
 /* 
 
 */
