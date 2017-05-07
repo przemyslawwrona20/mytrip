@@ -499,6 +499,8 @@
     ])
 })();
 (function () {
+    'use strict';
+
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap) {
@@ -528,7 +530,7 @@
                 }
                 $scope.map = map;
                 $scope.map.addListener('click', function (e) {
-                    placeMarkerAndPanTo(e.latLng, $scope.map);
+                    placeMarkerAndPanTo(e.latLng, $scope.map, $scope);
                 });
             });
 
@@ -574,7 +576,6 @@
                     timestamp: getTime(),
                     marker: marker
                 });
-                $scope.map.panTo(latLng);
 
                 markerId++;
             }
