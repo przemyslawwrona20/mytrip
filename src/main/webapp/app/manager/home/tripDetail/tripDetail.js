@@ -7,15 +7,18 @@
 
             $scope.trip = trip.data;
             var markerId = 0;
+            $scope.start = {};
+            $scope.theWaypoints = [];
+            $scope.end = {};
+            $scope.center = calcCenter();
+            $scope.zoom = calcZoom();
+
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
                 if ($scope.trip.points.length > 0) {
                     markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
                 }
             });
-
-            $scope.center = calcCenter();
-            $scope.zoom = calcZoom();
 
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
@@ -39,10 +42,31 @@
             };
 
             $scope.removePoint = function (pointId) {
-                console.log(pointId);
                 lodash.remove($scope.trip.points, {id: pointId});
             };
 
+            $scope.$watchCollection('trip.points', function () {
+                if($scope.trip.points.length > 1 ){
+                    $scope.start = $scope.trip.points[0];
+                    $scope.theWaypoints = [];
+                    if($scope.trip.points.length > 1 ){
+                        for (var i = 1; i < $scope.trip.points.length - 1; i++ ){
+                            var obj = {
+                                location:{
+                                    lat: $scope.trip.points[i].latitude,
+                                    lng: $scope.trip.points[i].longtitude
+                                },
+                                stopover: true
+                            };
+                            $scope.theWaypoints.push(obj);
+                        }
+                    }
+                    $scope.end = $scope.trip.points[$scope.trip.points.length-1];
+                }else{
+                    $scope.start = {};
+                    $scope.end = {};
+                }
+            });
             function getTime() {
                 var date = moment().format("YYYY-MM-DD[T]HH:mm:ss[Z]");
                 return date;

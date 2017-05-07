@@ -3,12 +3,25 @@
         <div>{{trip}}</div>
         <div>{{center}}</div>
     </div>
+    <p>Route: {{route}}</p>
+    <p>Start: {{start}}</p>
+    <p>Waypoints: {{theWaypoints}}</p>
+    <p>End: {{end}}</p>
     <div class="col-md-12">
         <ng-map id="map" center="{{center}}" zoom="10" on-click="addPoint()">
             <marker ng-repeat="point in trip.points"
                     position="[{{point.latitude}}, {{point.longtitude}}]"
                     on-click="removeMarker(point.id)"
             ></marker>
+            <directions ng-if="trip.points.length>1"
+                        draggable="true"
+                        travel-mode="WALKING"
+                        panel="directions-panel"
+                        origin="{{start.latitude}}, {{start.longtitude}}"
+                        destination="{{end.latitude}}, {{end.longtitude}}"
+                        waypoints="{{theWaypoints}}"
+                        suppress-markers="true">
+            </directions>
         </ng-map>
     </div>
     <!--<div class="col-md-12">Galeria zdjęć</div>-->
