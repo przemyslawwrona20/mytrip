@@ -507,6 +507,21 @@
             $scope.route = [];
             $scope.trip = trip.data;
 
+            NgMap.getMap().then(function (map) {
+                $scope.map = map;
+            });
+
+            // function (map) {
+            //     $scope.map = map;
+            //
+            //     if ($scope.trip.points.length > 0) {
+            //         markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
+            //     }
+            //     $scope.map.addListener('click', function (e) {
+            //         placeMarkerAndPanTo(e.latLng, $scope.map, $scope);
+            //     });
+            // });
+
             var markerId = 0;
 
             $scope.center = calcCenter();
@@ -514,22 +529,18 @@
 
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
+                console.log("remove " + tripId);
                 $state.go('app.home.trip')
             };
 
-            $scope.removePoint = function (tripId) {
-                lodash.remove($scope.trip.points, {id: tripId});
+            $scope.addPoint = function (event) {
+                var latLng = event.latLng;
+                $scope.trip.points.push({latitude: latLng.lat(), longtitude: latLng.lng()});
             };
 
-            NgMap.getMap().then(function (map) {
-                if ($scope.trip.points.length > 0) {
-                    markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
-                }
-                $scope.map = map;
-                $scope.map.addListener('click', function (e) {
-                    placeMarkerAndPanTo(e.latLng, $scope.map, $scope);
-                });
-            });
+            $scope.removePoint = function (pointId) {
+                lodash.remove($scope.trip.points, {id: pointId});
+            };
 
             function placeMarkerAndPanTo(latLng, map) {
                 // var marker = new google.maps.Marker({
