@@ -4,38 +4,34 @@
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap) {
-            $scope.route = [];
-            $scope.trip = trip.data;
 
+            $scope.trip = trip.data;
+            var markerId = 0;
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
+                if ($scope.trip.points.length > 0) {
+                    markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
+                }
             });
-
-            // function (map) {
-            //     $scope.map = map;
-            //
-            //     if ($scope.trip.points.length > 0) {
-            //         markerId = ($scope.trip.points[$scope.trip.points.length - 1].id) + 1;
-            //     }
-            //     $scope.map.addListener('click', function (e) {
-            //         placeMarkerAndPanTo(e.latLng, $scope.map, $scope);
-            //     });
-            // });
-
-            var markerId = 0;
 
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
 
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
-                console.log("remove " + tripId);
                 $state.go('app.home.trip')
             };
 
             $scope.addPoint = function (event) {
                 var latLng = event.latLng;
-                $scope.trip.points.push({latitude: latLng.lat(), longtitude: latLng.lng()});
+                $scope.trip.points.push({
+                    id: markerId,
+                    elevation:"",
+                    timestamp: getTime(),
+                    latitude: latLng.lat(),
+                    longtitude: latLng.lng()
+                });
+                markerId++;
             };
 
             $scope.removeMarker = function (event, pointId) {
@@ -47,41 +43,8 @@
                 lodash.remove($scope.trip.points, {id: pointId});
             };
 
-            function placeMarkerAndPanTo(latLng, map) {
-                // var marker = new google.maps.Marker({
-                //     position: latLng,
-                //     map: map
-                // });
-
-                // google.maps.event.addListener(marker, 'dblclick', function () {
-                //     removeMarker(marker.Id);
-                // });
-                var marker={};
-                marker.Id = markerId;
-
-                $scope.trip.points.push({
-                    id: marker.Id,
-                    latitude: latLng.lat(),
-                    longtitude: latLng.lng(),
-                    timestamp: getTime(),
-                    //marker: marker
-                });
-
-                markerId++;
-            }
-
-            function removeMarker(id) {
-                for (var i = 0; i < $scope.trip.points.length; i++) {
-                    if ($scope.trip.points[i].id == id) {
-                        $scope.trip.points[i].marker.setMap(null);
-                        $scope.trip.points.slice(i, 1);
-                        return;
-                    }
-                }
-            }
-
             function getTime() {
-                var date = moment().format("YYYYMMDD[T]hh:mm:ss[Z]");
+                var date = moment().format("YYYY-MM-DD[T]HH:mm:ss[Z]");
                 return date;
             }
 
