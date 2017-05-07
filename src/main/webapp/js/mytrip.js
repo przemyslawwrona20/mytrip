@@ -527,7 +527,15 @@
             };
 
             $scope.addPoint = function (event, callback) {
-                getElevation(event.latLng, addMarker);
+
+                $scope.trip.points.push({
+                    id: markerId,
+                    timestamp: getTime(),
+                    elevation: "",
+                    latitude: event.latLng.lat(),
+                    longtitude: event.latLng.lng()
+                });
+                markerId++;
             };
 
             $scope.removeMarker = function (event, pointId) {
@@ -572,28 +580,29 @@
                 var date = moment().format("YYYY-MM-DD[T]HH:mm:ss[Z]");
                 return date;
             }
-            function getElevation(latLng, callback){
-                var locations = [];
-                locations.push(latLng);
-                var positionalRequest = {
-                    'locations': locations
-                }
-                elevator.getElevationForLocations(positionalRequest, function(results) {
-                    callback(latLng,results[0].elevation);
-                });
-            }
+            // function getElevation(latLng, callback){
+            //     var locations = [];
+            //     locations.push(latLng);
+            //     var positionalRequest = {
+            //         'locations': locations
+            //     }
+            //     elevator.getElevationForLocations(positionalRequest, function(results) {
+            //         callback(latLng,results[0].elevation);
+            //     });
+            // }
 
-            function addMarker(latLng, elevation){
-                $scope.trip.points.push({
-                    id: markerId,
-                    timestamp: getTime(),
-                    elevation: elevation,
-                    latitude: latLng.lat(),
-                    longtitude: latLng.lng()
-                });
+            // function addMarker(latLng, elevation){
+            //     $scope.trip.points.push({
+            //         id: markerId,
+            //         timestamp: getTime(),
+            //         elevation: elevation,
+            //         latitude: latLng.lat(),
+            //         longtitude: latLng.lng()
+            //     });
+            //
+            //     markerId++;
+            // }
 
-                markerId++;
-            }
             function calcCenter() {
                 var center = [0.0, 0.0];
                 lodash.forEach($scope.trip.points, function (point) {
