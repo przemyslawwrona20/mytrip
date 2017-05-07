@@ -614,10 +614,10 @@
                 var maxLng = lodash.maxBy($scope.trip.points, function(point) { return Number(point.longtitude); });
                 var minLng = lodash.minBy($scope.trip.points, function(point) { return Number(point.longtitude); });
 
-                var latZoom = 180 / (Math.abs(maxLat.latitude) + Math.abs(minLat.latitude));
+                var latZoom = 360 / (Math.abs(maxLat.latitude) + Math.abs(minLat.latitude));
                 var lngZoom = 360 / (Math.abs(maxLng.longtitude) + Math.abs(minLng.longtitude));
 
-                return lodash.min([lodash.ceil(latZoom), lodash.ceil(lngZoom)]);
+                return lodash.max([lodash.ceil(latZoom), lodash.ceil(lngZoom)]);
             }
         }]);
 })();
