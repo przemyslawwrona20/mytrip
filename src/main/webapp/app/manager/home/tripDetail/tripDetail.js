@@ -29,8 +29,10 @@
             $scope.addPoint = function (event) {
 
                 var latLng = event.latLng;
-                getElevation(latLng);
+                getElevation(latLng, addMarker);
+            };
 
+            function addMarker(latLng, elevation){
                 $scope.trip.points.push({
                     id: markerId,
                     timestamp: getTime(),
@@ -40,8 +42,7 @@
                 });
 
                 markerId++;
-            };
-
+            }
             $scope.removeMarker = function (event, pointId) {
                 $scope.removePoint(pointId);
             };
@@ -77,14 +78,14 @@
                 return date;
             }
 
-            function getElevation(latLng){
+            function getElevation(latLng, callback){
                 var locations = [];
                 locations.push(latLng);
                 var positionalRequest = {
                     'locations': locations
                 }
                 elevator.getElevationForLocations(positionalRequest, function(results) {
-                    console.log(results[0].elevation);
+                    callback(latLng,results[0].elevation);
                 });
             }
 
