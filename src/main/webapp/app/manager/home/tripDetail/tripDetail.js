@@ -12,6 +12,7 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
+            var elevator = new google.maps.ElevationService;
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
@@ -26,14 +27,18 @@
             };
 
             $scope.addPoint = function (event) {
+
                 var latLng = event.latLng;
+                getElevation(latLng);
+
                 $scope.trip.points.push({
                     id: markerId,
-                    elevation:"",
                     timestamp: getTime(),
+                    elevation: elevation,
                     latitude: latLng.lat(),
                     longtitude: latLng.lng()
                 });
+
                 markerId++;
             };
 
@@ -70,6 +75,17 @@
             function getTime() {
                 var date = moment().format("YYYY-MM-DD[T]HH:mm:ss[Z]");
                 return date;
+            }
+
+            function getElevation(latLng){
+                var locations = [];
+                locations.push(latLng);
+                var positionalRequest = {
+                    'locations': locations
+                }
+                elevator.getElevationForLocations(positionalRequest, function(results) {
+                    console.log(results[0].elevation);
+                });
             }
 
             function calcCenter() {
