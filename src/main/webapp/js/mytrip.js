@@ -517,7 +517,7 @@
                             $scope.ServerResponse = data;
                         })
                         .error(function (data, status, header, config) {
-                            $scope.ServerResponse =  htmlDecode("Data: " + data +
+                            console.log("Data: " + data +
                                 "\n\n\n\nstatus: " + status +
                                 "\n\n\n\nheaders: " + header +
                                 "\n\n\n\nconfig: " + config);
