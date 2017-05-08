@@ -26,7 +26,7 @@
         <div class="row">
             <h2 class="text-center">Dodaj nową podróż</h2>
         </div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" ng-submit="putTrip()">
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Nazwa</label>
                 <input type="text" ng-model="name">
@@ -41,28 +41,28 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Media</label>
-                <textarea name="" id="media" cols="17" rows="2" ng-model="media"></textarea>
+                <input type="file" ng-model="media">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Plakat</label>
-                <input type="text" ng-model="poster">
+                <input type="file" ng-model="poster">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Prezentacja</label>
-                <input type="text" ng-model="presentation">
+                <input type="file" ng-model="presentation">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Początek podróży</label>
-                <input type="date" ng-model="start-date">
+                <input type="date" ng-model="startDate">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Koniec podróży</label>
-                <input type="date" ng-model="end-date">
+                <input type="date" ng-model="endDate">
             </div>
             <div class="col-sm-8 pull-left text-right">
-                <button type="submit" class="btn btn-default">Dodaj podróż</button>
+                <input type="submit" class="btn btn-default" value="Dodaj podróż">
             </div>
         </form>
     </div>
-    <h4>Wycieczka {{name}}</h4>
+    <h4>{{ServerResponse}}</h4>
 </div>

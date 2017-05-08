@@ -20,5 +20,19 @@
             $scope.getDetails = function (tripId) {
                 $state.go('app.home.tripDetail', {tripId: tripId})
             }
+
+            $scope.putTrip = function() {
+                var newTrip = {
+                    name: $scope.name,
+                    description: $scope.description,
+                    points: $scope.points,
+                    media: $scope.media,
+                    poster: $scope.poster,
+                    presentation: $scope.presentation,
+                    startDate: $scope.startDate,
+                    endDate:$scope.endDate,
+                }
+                ReportRemoteService.putTrip(newTrip);
+            }
         }]);
 })();
