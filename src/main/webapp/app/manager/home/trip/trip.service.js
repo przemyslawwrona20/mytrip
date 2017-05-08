@@ -16,22 +16,22 @@
                 removeTrip: function (id) {
 
                 },
-                putTrip: function(newTrip) {
-                    debugger;
+                postTrip: function(newTrip) {
+
                     var url = HOST + '/trips/';
-                    var data = $.param({
+                    var postData = {
                         name: newTrip.name,
                         description: newTrip.description,
-                        points: newTrip.points,
-                        media: newTrip.media,
-                        poster: newTrip.poster,
-                        presentation: newTrip.presentation,
+                        points: [],
+                        media: [],
+                        poster: "",
+                        presentation: "",
                         startDate: newTrip.startDate,
                         endDate: newTrip.endDate,
-                    });
-                    return $http.put(url,data)
+                    };
+                    return $http.post(url,postData)
                         .success(function (data, status, headers) {
-                            $scope.ServerResponse = data;
+                            console.log("Trip added!");
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +

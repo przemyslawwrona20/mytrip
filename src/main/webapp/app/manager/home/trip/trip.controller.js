@@ -21,7 +21,7 @@
                 $state.go('app.home.tripDetail', {tripId: tripId})
             }
 
-            $scope.putTrip = function() {
+            $scope.postTrip = function() {
                 var newTrip = {
                     name: $scope.name,
                     description: $scope.description,
@@ -29,10 +29,10 @@
                     media: $scope.media,
                     poster: $scope.poster,
                     presentation: $scope.presentation,
-                    startDate: $scope.startDate,
-                    endDate:$scope.endDate,
+                    startDate: $scope.startDate.toISOString().substring(0,10),
+                    endDate: $scope.endDate.toISOString().substring(0,10),
                 }
-                ReportRemoteService.putTrip(newTrip);
+                ReportRemoteService.postTrip(newTrip);
             }
         }]);
 })();
