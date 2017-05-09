@@ -25,8 +25,8 @@
                 var newTrip = {
                     name: $scope.name,
                     description: $scope.description,
-                    points: $scope.points,
-                    media: $scope.media,
+                   /* points: '',
+                    media: '',*/
                     startDate: $scope.startDate.toISOString().substring(0,10),
                     endDate: $scope.endDate.toISOString().substring(0,10),
                 }
