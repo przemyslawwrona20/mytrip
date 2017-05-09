@@ -29,3 +29,5 @@ node_modules/
 
 .idea/
 src/main/resources/static/vendor
+src/main/webapp/js
+src/main/webapp/css

@@ -24,16 +24,18 @@
     </div>
     <div class="col-md-6">
         <div class="row">
-            <h2 class="text-center">Dodaj nową podróż</h2>
+            <div class="col-md-12">
+                <h2 class="text-center">Dodaj nową podróż</h2>
+            </div>
         </div>
-        <form class="form-horizontal" ng-submit="postTrip()">
+        <form  ng-submit="postTrip()">
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Nazwa</label>
-                <input class="input-control" type="text" ng-model="name">
+                <input class="form-control" type="text" ng-model="name">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="" ng-model="description">Opis</label>
-                <input class="input-control" type="text" ng-model="description">
+                <input class="form-control" type="text" ng-model="description">
             </div>
             <!--<div class="form-group">-->
                 <!--<label class="control-label col-sm-5" for="">Punkty</label>-->
@@ -45,15 +47,13 @@
             <!--</div>-->
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Początek podróży</label>
-                <input class="input-control" type="date" ng-model="startDate">
+                <input class="form-control" type="date" ng-model="startDate">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Koniec podróży</label>
-                <input class="input-control" type="date" ng-model="endDate">
+                <input class="form-control" type="date" ng-model="endDate">
             </div>
-            <div class="col-sm-8 pull-left text-right">
-                <input type="submit" class="btn btn-default" value="Dodaj podróż">
-            </div>
+            <input type="submit" class="btn btn-default pull-right" value="Dodaj podróż">
         </form>
     </div>
 
