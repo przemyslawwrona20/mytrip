@@ -27,12 +27,10 @@
                     description: $scope.description,
                     points: $scope.points,
                     media: $scope.media,
-                    poster: $scope.poster,
-                    presentation: $scope.presentation,
                     startDate: $scope.startDate.toISOString().substring(0,10),
                     endDate: $scope.endDate.toISOString().substring(0,10),
                 }
                 ReportRemoteService.postTrip(newTrip);
             }
-        }]);
+            }]);
 })();

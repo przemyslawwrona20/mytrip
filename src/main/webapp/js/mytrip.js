@@ -449,14 +449,12 @@
                     description: $scope.description,
                     points: $scope.points,
                     media: $scope.media,
-                    poster: $scope.poster,
-                    presentation: $scope.presentation,
                     startDate: $scope.startDate.toISOString().substring(0,10),
                     endDate: $scope.endDate.toISOString().substring(0,10),
                 }
                 ReportRemoteService.postTrip(newTrip);
             }
-        }]);
+            }]);
 })();
 
 (function () {
@@ -507,14 +505,13 @@
                         description: newTrip.description,
                         points: [],
                         media: [],
-                        poster: "",
-                        presentation: "",
                         startDate: newTrip.startDate,
                         endDate: newTrip.endDate,
                     };
                     return $http.post(url,postData)
                         .success(function (data, status, headers) {
-                            console.log("Trip added!");
+                            console.log('Trip added!');
+                            alert("New trip added!");
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +

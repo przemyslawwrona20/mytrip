@@ -24,14 +24,13 @@
                         description: newTrip.description,
                         points: [],
                         media: [],
-                        poster: "",
-                        presentation: "",
                         startDate: newTrip.startDate,
                         endDate: newTrip.endDate,
                     };
                     return $http.post(url,postData)
                         .success(function (data, status, headers) {
-                            console.log("Trip added!");
+                            console.log('Trip added!');
+                            alert("New trip added!");
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +

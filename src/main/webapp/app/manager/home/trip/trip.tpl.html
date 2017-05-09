@@ -37,19 +37,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Punkty</label>
-                <textarea name="" id="points" cols="17" rows="2" ng-model="points"></textarea>
+                <input type="file" ng-model="points">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Media</label>
                 <input type="file" ng-model="media">
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-5" for="">Plakat</label>
-                <input type="file" ng-model="poster">
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-5" for="">Prezentacja</label>
-                <input type="file" ng-model="presentation">
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-5" for="">Początek podróży</label>
@@ -64,5 +56,6 @@
             </div>
         </form>
     </div>
-    <h4>{{ServerResponse}}</h4>
+
+
 </div>
