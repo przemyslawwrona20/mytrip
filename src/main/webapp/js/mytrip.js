@@ -453,8 +453,17 @@
                     endDate: $scope.endDate.toISOString().substring(0,10),
                 }
                 ReportRemoteService.postTrip(newTrip);
+                $scope.clearForm();
+            }
+
+            $scope.clearForm = function() {
+                $scope.name='';
+                $scope.description='';
+                $scope.startDate='';
+                $scope.endDate='';
             }
             }]);
+
 })();
 
 (function () {
@@ -497,7 +506,7 @@
                 removeTrip: function (id) {
 
                 },
-                postTrip: function(newTrip) {
+                postTrip: function(newTrip,postFlag) {
 
                     var url = HOST + '/trips/';
                     var postData = {
