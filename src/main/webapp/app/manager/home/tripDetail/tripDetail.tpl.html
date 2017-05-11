@@ -11,7 +11,6 @@
             ></marker>
             <directions ng-if="trip.points.length>1"
                         draggable="true"
-                        travel-mode="WALKING"
                         panel="directions-panel"
                         origin="{{start.latitude}}, {{start.longtitude}}"
                         destination="{{end.latitude}}, {{end.longtitude}}"
@@ -36,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="point in trip.points">
+            <tr ng-repeat="point in trip.points | orderBy:'timestamp'">
                 <td>{{point.id}}</td>
                 <td>{{point.timestamp}}</td>
                 <td><span class="nowrap">&Phi; {{point.latitude}}</span> <span class="nowrap">&lambda; {{point.longtitude}}</span></td>

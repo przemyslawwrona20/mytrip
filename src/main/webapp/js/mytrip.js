@@ -11,6 +11,7 @@
         'mytrip.view.home',
         'mytrip.view.footer',
         'mytrip.trip',
+        'mytrip.modal',
         'mytrip.view.tripDetail',
         'jcs-autoValidate',
         'ngFileUpload',
@@ -415,6 +416,43 @@
 (function () {
     'use strict';
 
+    angular.module('mytrip.modal', [
+        'ui.bootstrap'
+    ])
+})();
+
+(function () {
+    'use strict';
+
+    angular.module('mytrip.modal')
+        .factory('ModalService', ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {
+            return {
+                confirmation: function (header, body) {
+                    return $uibModal.open({
+                        animation: true,
+                        size: 'sm',
+                        templateUrl: 'app/manager/home/modalService/modalTemplate.tpl.html',
+                        resolve: {
+                            header: function () {
+                                return header;
+                            },
+                            body: function () {
+                                return body;
+                            }
+                        },
+                        controller: ['$scope', 'header', 'body', function ($scope, header, body) {
+                            $scope.header = header;
+                            $scope.body = body;
+                        }]
+                    });
+                }
+            };
+        }]);
+})();
+
+(function () {
+    'use strict';
+
     angular.module('mytrip.trip', [
         'ui.router'
     ])
@@ -447,13 +485,18 @@
                 var newTrip = {
                     name: $scope.name,
                     description: $scope.description,
-                    points: $scope.points,
-                    media: $scope.media,
+                   /* points: '',
+                    media: '',*/
                     startDate: $scope.startDate.toISOString().substring(0,10),
                     endDate: $scope.endDate.toISOString().substring(0,10),
                 }
                 ReportRemoteService.postTrip(newTrip);
                 $scope.clearForm();
+            }
+
+            $scope.uploadGpx= function(file){
+
+                ReportRemoteService.uploadGpx(file);
             }
 
             $scope.clearForm = function() {
@@ -463,7 +506,6 @@
                 $scope.endDate='';
             }
             }]);
-
 })();
 
 (function () {
@@ -495,6 +537,25 @@
         .factory('ReportRemoteService', ['$q', '$http', function ($q, $http, $scope) {
             var HOST = 'http://40.69.212.228';
             return {
+                uploadGpx: function(file) {
+
+                    var url = HOST + '/trips/100/uploadPath/';
+                    var postData ={
+                        file: file
+                    };
+                    return $http.post(url,postData)
+                        .success(function (data, status, headers) {
+                            console.log(' added!');
+                            alert("New trip added!");
+                        })
+                        .error(function (data, status, header, config) {
+                            console.log("Data: " + data +
+                                "\n\n\n\nstatus: " + status +
+                                "\n\n\n\nheaders: " + header +
+                                "\n\n\n\nconfig: " + config);
+                        });
+                },
+
                 getTrips: function () {
                     var url = HOST + '/trips/';
                     return $http.get(url);
@@ -506,7 +567,7 @@
                 removeTrip: function (id) {
 
                 },
-                postTrip: function(newTrip,postFlag) {
+                postTrip: function(newTrip) {
 
                     var url = HOST + '/trips/';
                     var postData = {
@@ -556,7 +617,6 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
-            var elevator = new google.maps.ElevationService;
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;

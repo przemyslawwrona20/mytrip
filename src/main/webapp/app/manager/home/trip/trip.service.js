@@ -5,6 +5,11 @@
         .factory('ReportRemoteService', ['$q', '$http', function ($q, $http, $scope) {
             var HOST = 'http://40.69.212.228';
             return {
+                uploadGpx: function(file) {
+                    var url = HOST + '/trips/100/uploadPath/';
+                    //dopisać
+                },
+
                 getTrips: function () {
                     var url = HOST + '/trips/';
                     return $http.get(url);

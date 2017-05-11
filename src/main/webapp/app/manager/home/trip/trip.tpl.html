@@ -23,11 +23,16 @@
 
     </div>
     <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label col-sm-5" for="name">Załaduj plik zgodny z formatem gpx</label>
+            <button class="button" ngf-select="uploadGpx($file)" accept=".gpx">Wybierz</button>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <h2 class="text-center">Dodaj nową podróż</h2>
             </div>
         </div>
+
         <form  ng-submit="postTrip()">
             <div class="form-group">
                 <label class="control-label col-sm-5" for="name">Nazwa</label>

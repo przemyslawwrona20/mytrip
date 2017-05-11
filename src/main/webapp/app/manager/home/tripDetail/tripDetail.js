@@ -12,7 +12,6 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
-            var elevator = new google.maps.ElevationService;
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
