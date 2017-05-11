@@ -11,6 +11,7 @@
         'mytrip.view.home',
         'mytrip.view.footer',
         'mytrip.trip',
+        'mytrip.modal',
         'mytrip.view.tripDetail',
         'jcs-autoValidate',
         'ngFileUpload',
