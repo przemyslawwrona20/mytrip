@@ -65,6 +65,21 @@
                                 "\n\n\n\nheaders: " + header +
                                 "\n\n\n\nconfig: " + config);
                         });
+                },
+                uploadFile: function(uploadData) {
+                    var url = HOST + '/media/';
+                    return $http.put(url, uploadData)
+                        .success(function (data, status, headers) {
+                            modalService.confirmation('','Zdjęcie dodane pomyślnie!','sm');
+                            console.log('Sukces!');
+                            alert("Sukces!");
+                        })
+                        .error(function (data, status, header, config) {
+                            console.log("Data: " + data +
+                                "\n\n\n\nstatus: " + status +
+                                "\n\n\n\nheaders: " + header +
+                                "\n\n\n\nconfig: " + config);
+                        });
                 }
             };
         }]);

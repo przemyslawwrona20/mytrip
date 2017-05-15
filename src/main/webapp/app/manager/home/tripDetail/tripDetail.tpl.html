@@ -8,6 +8,7 @@
             <marker ng-repeat="point in trip.points"
                     position="[{{point.latitude}}, {{point.longtitude}}]"
                     on-click="removeMarker(point.id)"
+                    on-rightclick="showMarkerDetails(point.id, trip.id)"
             ></marker>
             <directions ng-if="trip.points.length>1"
                         draggable="true"
