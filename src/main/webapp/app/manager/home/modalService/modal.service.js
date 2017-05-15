@@ -4,10 +4,10 @@
     angular.module('mytrip.modal')
         .factory('ModalService', ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {
             return {
-                confirmation: function (header, body) {
+                confirmation: function (header, body,size) {
                     return $uibModal.open({
                         animation: true,
-                        size: 'sm',
+                        size: size,
                         templateUrl: 'app/manager/home/modalService/modalTemplate.tpl.html',
                         resolve: {
                             header: function () {

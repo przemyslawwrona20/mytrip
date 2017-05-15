@@ -427,10 +427,10 @@
     angular.module('mytrip.modal')
         .factory('ModalService', ['$rootScope', '$uibModal', function ($rootScope, $uibModal) {
             return {
-                confirmation: function (header, body) {
+                confirmation: function (header, body,size) {
                     return $uibModal.open({
                         animation: true,
-                        size: 'sm',
+                        size: size,
                         templateUrl: 'app/manager/home/modalService/modalTemplate.tpl.html',
                         resolve: {
                             header: function () {
@@ -534,26 +534,12 @@
     'use strict';
 
     angular.module('mytrip.trip')
-        .factory('ReportRemoteService', ['$q', '$http', function ($q, $http, $scope) {
+        .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
             var HOST = 'http://40.69.212.228';
             return {
                 uploadGpx: function(file) {
-
                     var url = HOST + '/trips/100/uploadPath/';
-                    var postData ={
-                        file: file
-                    };
-                    return $http.post(url,postData)
-                        .success(function (data, status, headers) {
-                            console.log(' added!');
-                            alert("New trip added!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    //dopisać
                 },
 
                 getTrips: function () {
@@ -567,8 +553,30 @@
                 removeTrip: function (id) {
 
                 },
+                editTrip: function(editedTrip) {
+                    var url = HOST + '/trips/'+editedTrip.id +'/';
+                    var postData = {
+                        name: editedTrip.name,
+                        description: editedTrip.description,
+                        points: editedTrip.points,
+                        media: [],
+                        startDate: editedTrip.startDate,
+                        endDate: editedTrip.endDate,
+                    };
+                    return $http.put(url,postData)
+                        .success(function (data, status, headers) {
+                            modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
+                            console.log('Trip edited!');
+                            alert("Trip edited!");
+                        })
+                        .error(function (data, status, header, config) {
+                            console.log("Data: " + data +
+                                "\n\n\n\nstatus: " + status +
+                                "\n\n\n\nheaders: " + header +
+                                "\n\n\n\nconfig: " + config);
+                        });
+                },
                 postTrip: function(newTrip) {
-
                     var url = HOST + '/trips/';
                     var postData = {
                         name: newTrip.name,
@@ -608,7 +616,7 @@
 
     angular.module('mytrip.view.tripDetail')
 
-        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap) {
+        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, modalService) {
 
             $scope.trip = trip.data;
             var markerId = 0;
@@ -628,6 +636,58 @@
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
+            };
+
+            $scope.editTrip = function () {
+                //modalService.open();
+                var tripName = $scope.trip.name;
+
+                modalService.confirmation('Edytuj wycieczkę '+tripName,'','md');
+                setTimeout(function(){
+                    var formContent = '<form ng-submit="postEditedTrip()">' +
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Nazwa</label>' +
+                        '<input class="input-control" type="text" ng-model="newName" id="name" value="'+tripName+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="description" ng-model="description">Opis</label>'+
+                        '<input class="input-control" type="text" ng-model="newDescription" id="description" value="' +$scope.trip.description+'"/>'+
+                        '</div>' +
+                        '<label class="control-label col-sm-4">Punkty</label>'+
+                        '<input ng-repeat="point in '+$scope.trip.points+' class="input-control" type="text" ng-model="description" id="description" value="point"/>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="startDate">Początek podróży</label>'+
+                        '<input class="input-control" type="date" ng-model="newStartDate" id="startDate" value="'+$scope.trip.startDate+'"/>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="endDate">Koniec podróży</label>'+
+                        '<input class="input-control" type="date" ng-model="newEndDate" id="endDate" value="'+$scope.trip.endDate+'"/>'+
+                        '</div>' +
+                        '<div class="col-sm-8 pull-left text-right">'+
+                        '<input type="submit" class="btn btn-default submit-button" value="Edytuj podróż">'+
+                        '</div>'+
+                        '</form>';
+                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
+                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
+                    var button = $('.submit-button')[0];
+                },500);
+
+            };
+
+            $scope.postEditedTrip = function () {
+                var editedTrip = {
+                    id: $scope.trip.id,
+                    name: $scope.newName || $scope.trip.name,
+                    description: $scope.newDescription || $scope.trip.description,
+                    points:$scope.trip.points,
+                    /* points: '',
+                     media: '',*/
+                    startDate: $scope.newStartDate || $scope.trip.startDate,
+                    endDate: $scope.newEndDate || $scope.trip.endDate,
+                };
+                debugger;
+                ReportRemoteService.editTrip(editedTrip);
             };
 
             $scope.addPoint = function (event, callback) {
@@ -832,7 +892,7 @@
                 confirmation: function (header, body) {
                     return $uibModal.open({
                         animation: true,
-                        size: 'sm',
+                        size: 'lg',
                         templateUrl: 'notifications/appModalService/modalTemplate.tpl.html',
                         resolve: {
                             header: function () {
@@ -844,7 +904,7 @@
                         },
                         controller: ['$scope', 'header', 'body', function ($scope, header, body) {
                             $scope.header = header;
-                            $scope.body = body;
+                            $scope.body = body.toHtmlObject;
                         }]
                     });
                 }
