@@ -27,7 +27,7 @@
 
             $scope.showMarkerDetails = function (event, pointId, tripId) {
 
-                modalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
+                ModalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
                 setTimeout(function () {
                     var formContent = '<div class="panel panel-default">' +
                         '<div class="panel-body">' +
@@ -68,7 +68,7 @@
                 //modalService.open();
                 var tripName = $scope.trip.name;
 
-                modalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
+                ModalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
                 setTimeout(function () {
                     var formContent = '<form ng-submit="postEditedTrip()">' +
                         '<div class="form-group">' +
@@ -122,10 +122,12 @@
                     /* points: '',
                      media: '',*/
                     startDate: newStartDate,
-                    endDate: newEndDate,
+                    endDate: newEndDate
                 };
-                debugger;
-                ReportRemoteService.editTrip(editedTrip);
+
+                ReportRemoteService.editTrip(editedTrip).then(function (results) {
+
+                });
             };
 
             $scope.addPoint = function (event, callback) {

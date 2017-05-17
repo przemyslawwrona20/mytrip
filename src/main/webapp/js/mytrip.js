@@ -443,6 +443,25 @@
                             $scope.body = body;
                         }]
                     });
+                },
+                editTripModal: function () {
+                    return $uibModal.open({
+                        animation: true,
+                        size: 'sm',
+                        templateUrl: 'app/manager/home/modalService/editTripModal.tpl.html',
+                        resolve: {
+                            header: function () {
+                                return header;
+                            },
+                            body: function () {
+                                return body;
+                            }
+                        },
+                        controller: ['$scope', 'header', 'body', function ($scope, header, body) {
+                            $scope.header = header;
+                            $scope.body = body;
+                        }]
+                    });
                 }
             };
         }]);
@@ -565,27 +584,27 @@
                         });
                 },
                 editTrip: function(editedTrip) {
-                    var url = HOST + '/trips/'+editedTrip.id +'/';
+                    var url = HOST + '/trips/'+ editedTrip.id +'/';
                     var postData = {
                         name: editedTrip.name,
                         description: editedTrip.description,
                         points: editedTrip.points,
                         media: [],
                         startDate: editedTrip.startDate,
-                        endDate: editedTrip.endDate,
+                        endDate: editedTrip.endDate
                     };
-                    return $http.put(url,postData)
-                        .success(function (data, status, headers) {
-                            modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
-                            console.log('Trip edited!');
-                            alert("Trip edited!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.put(url,postData);
+                        // .success(function (data, status, headers) {
+                        //     modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
+                        //     console.log('Trip edited!');
+                        //     alert("Trip edited!");
+                        // })
+                        // .error(function (data, status, header, config) {
+                        //     console.log("Data: " + data +
+                        //         "\n\n\n\nstatus: " + status +
+                        //         "\n\n\n\nheaders: " + header +
+                        //         "\n\n\n\nconfig: " + config);
+                        // });
                 },
                 postTrip: function(trip) {
                     var url = HOST + '/trips';
@@ -649,7 +668,7 @@
 
             $scope.showMarkerDetails = function (event, pointId, tripId) {
 
-                modalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
+                ModalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
                 setTimeout(function () {
                     var formContent = '<div class="panel panel-default">' +
                         '<div class="panel-body">' +
@@ -690,7 +709,7 @@
                 //modalService.open();
                 var tripName = $scope.trip.name;
 
-                modalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
+                ModalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
                 setTimeout(function () {
                     var formContent = '<form ng-submit="postEditedTrip()">' +
                         '<div class="form-group">' +
@@ -744,10 +763,12 @@
                     /* points: '',
                      media: '',*/
                     startDate: newStartDate,
-                    endDate: newEndDate,
+                    endDate: newEndDate
                 };
-                debugger;
-                ReportRemoteService.editTrip(editedTrip);
+
+                ReportRemoteService.editTrip(editedTrip).then(function (results) {
+
+                });
             };
 
             $scope.addPoint = function (event, callback) {

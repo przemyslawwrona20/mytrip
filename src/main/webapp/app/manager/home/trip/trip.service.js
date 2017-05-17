@@ -35,27 +35,27 @@
                         });
                 },
                 editTrip: function(editedTrip) {
-                    var url = HOST + '/trips/'+editedTrip.id +'/';
+                    var url = HOST + '/trips/'+ editedTrip.id +'/';
                     var postData = {
                         name: editedTrip.name,
                         description: editedTrip.description,
                         points: editedTrip.points,
                         media: [],
                         startDate: editedTrip.startDate,
-                        endDate: editedTrip.endDate,
+                        endDate: editedTrip.endDate
                     };
-                    return $http.put(url,postData)
-                        .success(function (data, status, headers) {
-                            modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
-                            console.log('Trip edited!');
-                            alert("Trip edited!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.put(url,postData);
+                        // .success(function (data, status, headers) {
+                        //     modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
+                        //     console.log('Trip edited!');
+                        //     alert("Trip edited!");
+                        // })
+                        // .error(function (data, status, header, config) {
+                        //     console.log("Data: " + data +
+                        //         "\n\n\n\nstatus: " + status +
+                        //         "\n\n\n\nheaders: " + header +
+                        //         "\n\n\n\nconfig: " + config);
+                        // });
                 },
                 postTrip: function(trip) {
                     var url = HOST + '/trips';
