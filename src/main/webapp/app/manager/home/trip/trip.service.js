@@ -5,8 +5,7 @@
         .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
             var HOST = 'http://40.69.212.228';
             return {
-                uploadGpx: function(file) {
-                    var url = HOST + '/trips/100/uploadPath/';
+                uploadGpx: function(file,id) {
                     //dopisać
                 },
 

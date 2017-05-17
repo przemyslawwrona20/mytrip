@@ -6,14 +6,13 @@
                     on-click="removeMarker(point.id)"
                     on-rightclick="showMarkerDetails(point.id, trip.id)"
             ></marker>
-            <directions ng-if="trip.points.length>1"
-                        draggable="true"
-                        panel="directions-panel"
-                        origin="{{start.latitude}}, {{start.longtitude}}"
-                        destination="{{end.latitude}}, {{end.longtitude}}"
-                        waypoints="{{theWaypoints}}"
-                        suppress-markers="true">
-            </directions>
+            <shape name="polyline"
+                   path="{{sortedPoints}}"
+                   geodesic="true"
+                   stroke-color="#FF0000"
+                   stroke-opacity="1.0"
+                   stroke-weight="2">
+            </shape>
         </ng-map>
     </div>
     <!--<div class="col-md-12">Galeria zdjęć</div>-->

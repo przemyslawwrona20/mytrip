@@ -12,6 +12,7 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
+            $scope.sortedPoints= [];
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
@@ -151,33 +152,23 @@
             };
 
             $scope.$watchCollection('trip.points', function () {
-                if ($scope.trip.points.length > 1) {
-                    $scope.start = $scope.trip.points[0];
-                    $scope.theWaypoints = [];
-                    if ($scope.trip.points.length > 1) {
-                        for (var i = 1; i < $scope.trip.points.length - 1; i++) {
-                            var latitude = $scope.trip.points[i].latitude;
-                            var longtitude = $scope.trip.points[i].longtitude;
-                            if (typeof latitude === "string" || latitude instanceof String) {
-                                latitude = parseFloat(latitude);
-                            }
-                            if (typeof longtitude === "string" || longtitude instanceof String) {
-                                longtitude = parseFloat(longtitude);
-                            }
-                            var obj = {
-                                location: {
-                                    lat: latitude,
-                                    lng: longtitude
-                                },
-                                stopover: false
-                            };
-                            $scope.theWaypoints.push(obj);
-                        }
+                $scope.sortedPoints=[];
+                var sorted = $scope.trip.points;
+                sorted.sort(function(a,b){
+                        if(a.timestamp < b.timestamp) return -1;
+                        if(a.timestamp > b.timestamp) return 1;
+                        return 0;
+                    });
+                for(var i = 0; i< sorted.length;i++){
+                    var latitude=sorted[i].latitude;
+                    var longtitude =sorted[i].longtitude;
+                    if(typeof latitude === "string" || latitude instanceof String) {
+                        latitude = parseFloat(latitude);
                     }
-                    $scope.end = $scope.trip.points[$scope.trip.points.length - 1];
-                } else {
-                    $scope.start = {};
-                    $scope.end = {};
+                    if(typeof longtitude === "string" || longtitude instanceof String) {
+                        longtitude = parseFloat(longtitude);
+                    }
+                    $scope.sortedPoints.push([latitude, longtitude]);
                 }
             });
             function getTime() {

@@ -35,9 +35,12 @@
             };
 
             $scope.uploadGpx= function(file){
-
-                ReportRemoteService.uploadGpx(file);
-            };
+                var json = $scope.trips;
+                var lastKey = Object.keys(json).sort().reverse()[0];
+                var lastElement = json[lastKey];
+                var id = lastElement.id + 1;
+                ReportRemoteService.uploadGpx(file,id);
+            }
 
             $scope.clearForm = function() {
                 $scope.name='';
