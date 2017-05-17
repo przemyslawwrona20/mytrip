@@ -19,25 +19,25 @@
 
             $scope.getDetails = function (tripId) {
                 $state.go('app.home.tripDetail', {tripId: tripId})
-            }
+            };
 
             $scope.postTrip = function() {
                 var newTrip = {
                     name: $scope.name,
                     description: $scope.description,
-                   /* points: '',
-                    media: '',*/
-                    startDate: $scope.startDate.toISOString().substring(0,10),
-                    endDate: $scope.endDate.toISOString().substring(0,10),
-                }
-                ReportRemoteService.postTrip(newTrip);
+                    startDate: $scope.startDate.toISOString().substring(0, 10),
+                    endDate: $scope.endDate.toISOString().substring(0, 10)
+                };
+                ReportRemoteService.postTrip(newTrip).then(function(trip){
+                    $scope.trips.push(trip.data);
+                });
                 $scope.clearForm();
-            }
+            };
 
             $scope.uploadGpx= function(file){
 
                 ReportRemoteService.uploadGpx(file);
-            }
+            };
 
             $scope.clearForm = function() {
                 $scope.name='';

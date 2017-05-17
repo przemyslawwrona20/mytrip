@@ -11,7 +11,7 @@
                 },
 
                 getTrips: function () {
-                    var url = HOST + '/trips/';
+                    var url = HOST + '/trips';
                     return $http.get(url);
                 },
                 getTrip: function (tripId) {
@@ -57,17 +57,10 @@
                                 "\n\n\n\nconfig: " + config);
                         });
                 },
-                postTrip: function(newTrip) {
-                    var url = HOST + '/trips/';
-                    var postData = {
-                        name: newTrip.name,
-                        description: newTrip.description,
-                        points: [],
-                        media: [],
-                        startDate: newTrip.startDate,
-                        endDate: newTrip.endDate
-                    };
-                    return $http.post(url, postData);
+                postTrip: function(trip) {
+                    var url = HOST + '/trips';
+                    trip = angular.extend(trip, {points: [], media: []});
+                    return $http.post(url, trip);
                 },
                 uploadFile: function(uploadData) {
                     var url = HOST + '/media/';
