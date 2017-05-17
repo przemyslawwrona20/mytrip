@@ -443,25 +443,6 @@
                             $scope.body = body;
                         }]
                     });
-                },
-                editTripModal: function () {
-                    return $uibModal.open({
-                        animation: true,
-                        size: 'sm',
-                        templateUrl: 'app/manager/home/modalService/editTripModal.tpl.html',
-                        resolve: {
-                            header: function () {
-                                return header;
-                            },
-                            body: function () {
-                                return body;
-                            }
-                        },
-                        controller: ['$scope', 'header', 'body', function ($scope, header, body) {
-                            $scope.header = header;
-                            $scope.body = body;
-                        }]
-                    });
                 }
             };
         }]);
