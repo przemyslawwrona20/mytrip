@@ -1,7 +1,5 @@
 (function (window, angular, undefined) {
     angular.module('mytrip', [
-        // 'templates-app',
-        // 'templates-common',
         'ui.router',
         'ui.bootstrap',
 
@@ -597,12 +595,17 @@
                         points: [],
                         media: [],
                         startDate: newTrip.startDate,
-                        endDate: newTrip.endDate,
+                        endDate: newTrip.endDate
                     };
-                    return $http.post(url,postData)
+                    return $http.post(url, postData);
+                },
+                uploadFile: function(uploadData) {
+                    var url = HOST + '/media/';
+                    return $http.put(url, uploadData)
                         .success(function (data, status, headers) {
-                            console.log('Trip added!');
-                            alert("New trip added!");
+                            modalService.confirmation('','Zdjęcie dodane pomyślnie!','sm');
+                            console.log('Sukces!');
+                            alert("Sukces!");
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +
@@ -649,6 +652,45 @@
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
+            };
+
+            $scope.showMarkerDetails = function (event, pointId, tripId) {
+
+                modalService.confirmation('Szczegóły punktu nr: '+ pointId,'','md');
+                setTimeout(function(){
+                    var formContent = '<div class="panel panel-default">'+
+                        '<div class="panel-body">'+
+                        '<form>'+
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Id punktu</label>' +
+                        '<input class="input-control" disabled type="text" ng-model="pointId" id="name" value="'+pointId+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Id wycieczki</label>' +
+                        '<input class="input-control" disabled type="text" ng-model="tripId" id="name" value="'+tripId+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">'+
+                        '<label for="myFileField">Wybierz plik: </label>'+
+                        '<input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>'+
+                        '</div>'+
+                        '<button ng-click="uploadFile()" class = "btn btn-primary submit-button">Upload File</button>'+
+                        '</form>'+
+                        '</div>'+
+                        '</div>';
+                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
+                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
+                    var button = $('.submit-button')[0];
+                },500);
+
+            };
+
+            $scope.uploadFile = function () {
+                var uploadData = {
+                    point: $scope.pointId,
+                    trip: $scope.trip.id,
+                    content: $scope.myFile
+                };
+                ReportRemoteService.uploadFile(uploadData);
             };
 
             $scope.editTrip = function () {
@@ -732,7 +774,9 @@
             };
 
             $scope.removePoint = function (pointId) {
-                lodash.remove($scope.trip.points, {id: pointId});
+                ModalService.confirmation("", "").then(function () {
+                    lodash.remove($scope.trip.points, {id: pointId});
+                });
             };
 
             $scope.$watchCollection('trip.points', function () {

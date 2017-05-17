@@ -65,19 +65,9 @@
                         points: [],
                         media: [],
                         startDate: newTrip.startDate,
-                        endDate: newTrip.endDate,
+                        endDate: newTrip.endDate
                     };
-                    return $http.post(url,postData)
-                        .success(function (data, status, headers) {
-                            console.log('Trip added!');
-                            alert("New trip added!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.post(url, postData);
                 },
                 uploadFile: function(uploadData) {
                     var url = HOST + '/media/';

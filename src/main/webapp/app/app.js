@@ -1,7 +1,5 @@
 (function (window, angular, undefined) {
     angular.module('mytrip', [
-        // 'templates-app',
-        // 'templates-common',
         'ui.router',
         'ui.bootstrap',
 
