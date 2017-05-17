@@ -3,7 +3,7 @@
 
     angular.module('mytrip.view.tripDetail')
 
-        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap) {
+        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, ModalService) {
 
             $scope.trip = trip.data;
             var markerId = 0;
@@ -43,7 +43,9 @@
             };
 
             $scope.removePoint = function (pointId) {
-                lodash.remove($scope.trip.points, {id: pointId});
+                ModalService.confirmation("", "").then(function () {
+                    lodash.remove($scope.trip.points, {id: pointId});
+                });
             };
 
             $scope.$watchCollection('trip.points', function () {
