@@ -46,7 +46,7 @@
                     };
                     return $http.put(url,postData)
                         .success(function (data, status, headers) {
-                            modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
+                            //modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
                             console.log('Trip edited!');
                             alert("Trip edited!");
                         })
@@ -58,9 +58,19 @@
                         });
                 },
                 postTrip: function(trip) {
-                    var url = HOST + '/trips';
+                    var url = HOST + '/trips/';
                     trip = angular.extend(trip, {points: [], media: []});
-                    return $http.post(url, trip);
+                    return $http.post(url, trip)
+                        .success(function (data,status,headers) {
+                            //modalService.confirmation('','Wycieczka dodana pomyślnie!','sm');
+                            console.log('Sukces!');
+                        })
+                        .error(function (data, status, header, config) {
+                            console.log("Data: " + data +
+                                "\n\n\n\nstatus: " + status +
+                                "\n\n\n\nheaders: " + header +
+                                "\n\n\n\nconfig: " + config);
+                        });
                 },
                 uploadFile: function(uploadData) {
                     var url = HOST + '/media/';
