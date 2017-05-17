@@ -550,8 +550,21 @@
                     var url = HOST + '/trips/' + tripId;
                     return $http.get(url);
                 },
-                removeTrip: function (id) {
+                removeTrip: function (tripId) {
+                    var url = HOST + '/trips/' + tripId;
 
+                    return $http.delete(url)
+                        .success(function () {
+                        console.log("Id: " + tripId + ' trip has been removed.');
+                        alert("Id: " + tripId + ' trip has been removed.');
+                    })
+                        .error(function (data, status, header, config) {
+                            console.log("Data: " + data +
+                                "\n\n\n\nstatus: " + status +
+                                "\n\n\n\nheaders: " + header +
+                                "\n\n\n\nconfig: " + config);
+                            alert("Unable to remove trip - Id: " + tripId);
+                        });
                 },
                 editTrip: function(editedTrip) {
                     var url = HOST + '/trips/'+editedTrip.id +'/';
@@ -676,6 +689,18 @@
             };
 
             $scope.postEditedTrip = function () {
+                var newStartDate;
+                var newEndDate;
+                if($scope.newStartDate!=null) {
+                    newStartDate=$scope.newStartDate.toISOString().substring(0,10);
+                } else{
+                    newStartDate = $scope.trip.startDate;
+                }
+                if($scope.newEndDate!=null) {
+                    newEndDate=$scope.newEndDate.toISOString().substring(0,10);
+                } else{
+                    newEndDate = $scope.trip.endDate;
+                }
                 var editedTrip = {
                     id: $scope.trip.id,
                     name: $scope.newName || $scope.trip.name,
@@ -683,8 +708,8 @@
                     points:$scope.trip.points,
                     /* points: '',
                      media: '',*/
-                    startDate: $scope.newStartDate || $scope.trip.startDate,
-                    endDate: $scope.newEndDate || $scope.trip.endDate,
+                    startDate: newStartDate,
+                    endDate: newEndDate,
                 };
                 debugger;
                 ReportRemoteService.editTrip(editedTrip);
