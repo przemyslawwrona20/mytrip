@@ -8,7 +8,7 @@
                 confirmation: function (header, body) {
                     return $uibModal.open({
                         animation: true,
-                        size: 'sm',
+                        size: 'lg',
                         templateUrl: 'notifications/appModalService/modalTemplate.tpl.html',
                         resolve: {
                             header: function () {
@@ -20,7 +20,7 @@
                         },
                         controller: ['$scope', 'header', 'body', function ($scope, header, body) {
                             $scope.header = header;
-                            $scope.body = body;
+                            $scope.body = body.toHtmlObject;
                         }]
                     });
                 }

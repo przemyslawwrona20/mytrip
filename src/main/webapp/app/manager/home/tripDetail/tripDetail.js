@@ -3,7 +3,7 @@
 
     angular.module('mytrip.view.tripDetail')
 
-        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, ModalService) {
+        .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, modalService) {
 
             $scope.trip = trip.data;
             var markerId = 0;
@@ -12,7 +12,6 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
-            var elevator = new google.maps.ElevationService;
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
@@ -24,6 +23,109 @@
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 $state.go('app.home.trip')
+            };
+
+            $scope.showMarkerDetails = function (event, pointId, tripId) {
+
+                modalService.confirmation('Szczegóły punktu nr: '+ pointId,'','md');
+                setTimeout(function(){
+                    var formContent = '<div class="panel panel-default">'+
+                        '<div class="panel-body">'+
+                        '<form>'+
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Id punktu</label>' +
+                        '<input class="input-control" disabled type="text" ng-model="pointId" id="name" value="'+pointId+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Id wycieczki</label>' +
+                        '<input class="input-control" disabled type="text" ng-model="tripId" id="name" value="'+tripId+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">'+
+                        '<label for="myFileField">Wybierz plik: </label>'+
+                        '<input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>'+
+                        '</div>'+
+                        '<button ng-click="uploadFile()" class = "btn btn-primary submit-button">Upload File</button>'+
+                        '</form>'+
+                        '</div>'+
+                        '</div>';
+                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
+                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
+                    var button = $('.submit-button')[0];
+                },500);
+
+            };
+
+            $scope.uploadFile = function () {
+                var uploadData = {
+                    point: $scope.pointId,
+                    trip: $scope.trip.id,
+                    content: $scope.myFile
+                };
+                ReportRemoteService.uploadFile(uploadData);
+            };
+
+            $scope.editTrip = function () {
+                //modalService.open();
+                var tripName = $scope.trip.name;
+
+                modalService.confirmation('Edytuj wycieczkę '+tripName,'','md');
+                setTimeout(function(){
+                    var formContent = '<form ng-submit="postEditedTrip()">' +
+                        '<div class="form-group">' +
+                        '<label class="control-label col-sm-4" for="name">Nazwa</label>' +
+                        '<input class="input-control" type="text" ng-model="newName" id="name" value="'+tripName+'"/>'+
+                        '</div>' +
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="description" ng-model="description">Opis</label>'+
+                        '<input class="input-control" type="text" ng-model="newDescription" id="description" value="' +$scope.trip.description+'"/>'+
+                        '</div>' +
+                        '<label class="control-label col-sm-4">Punkty</label>'+
+                        '<input ng-repeat="point in '+$scope.trip.points+' class="input-control" type="text" ng-model="description" id="description" value="point"/>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="startDate">Początek podróży</label>'+
+                        '<input class="input-control" type="date" ng-model="newStartDate" id="startDate" value="'+$scope.trip.startDate+'"/>'+
+                        '</div>'+
+                        '<div class="form-group">'+
+                        '<label class="control-label col-sm-4" for="endDate">Koniec podróży</label>'+
+                        '<input class="input-control" type="date" ng-model="newEndDate" id="endDate" value="'+$scope.trip.endDate+'"/>'+
+                        '</div>' +
+                        '<div class="col-sm-8 pull-left text-right">'+
+                        '<input type="submit" class="btn btn-default submit-button" value="Edytuj podróż">'+
+                        '</div>'+
+                        '</form>';
+                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
+                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
+                    var button = $('.submit-button')[0];
+                },500);
+
+            };
+
+            $scope.postEditedTrip = function () {
+                var newStartDate;
+                var newEndDate;
+                if($scope.newStartDate!=null) {
+                    newStartDate=$scope.newStartDate.toISOString().substring(0,10);
+                } else{
+                    newStartDate = $scope.trip.startDate;
+                }
+                if($scope.newEndDate!=null) {
+                    newEndDate=$scope.newEndDate.toISOString().substring(0,10);
+                } else{
+                    newEndDate = $scope.trip.endDate;
+                }
+                var editedTrip = {
+                    id: $scope.trip.id,
+                    name: $scope.newName || $scope.trip.name,
+                    description: $scope.newDescription || $scope.trip.description,
+                    points:$scope.trip.points,
+                    /* points: '',
+                     media: '',*/
+                    startDate: newStartDate,
+                    endDate: newEndDate,
+                };
+                debugger;
+                ReportRemoteService.editTrip(editedTrip);
             };
 
             $scope.addPoint = function (event, callback) {

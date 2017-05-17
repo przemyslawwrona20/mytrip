@@ -34,6 +34,11 @@
                 $scope.clearForm();
             }
 
+            $scope.uploadGpx= function(file){
+
+                ReportRemoteService.uploadGpx(file);
+            }
+
             $scope.clearForm = function() {
                 $scope.name='';
                 $scope.description='';
@@ -41,5 +46,4 @@
                 $scope.endDate='';
             }
             }]);
-
 })();
