@@ -657,8 +657,10 @@
             });
 
             $scope.removeTrip = function (tripId) {
-                // ReportRemoteService.removeTrip(tripId)
-                $state.go('app.home.trip')
+                ReportRemoteService.removeTrip(tripId)
+                    .then(function(){
+                        $state.go('app.home.trip', {}, { reload: true });
+                    });
             };
 
             $scope.showMarkerDetails = function (event, pointId, tripId) {
