@@ -43,18 +43,19 @@
                         startDate: editedTrip.startDate,
                         endDate: editedTrip.endDate
                     };
-                    return $http.put(url,postData)
-                        .success(function (data, status, headers) {
-                            //modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
-                            console.log('Trip edited!');
-                            alert("Trip edited!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.put(url,postData);
+                },
+                editPoints: function(trip) {
+                    var url = HOST + '/trips/'+trip.id +'/';
+                    var postData = {
+                        name: trip.name,
+                        description: trip.description,
+                        points: trip.points,
+                        media: [],
+                        startDate: trip.startDate,
+                        endDate: trip.endDate,
+                    };
+                    return $http.put(url,postData);
                 },
                 postTrip: function(trip) {
                     var url = HOST + '/trips/';

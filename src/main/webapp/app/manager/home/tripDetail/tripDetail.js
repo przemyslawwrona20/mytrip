@@ -65,42 +65,6 @@
                 ReportRemoteService.uploadFile(uploadData);
             };
 
-            $scope.editTrip = function () {
-                //modalService.open();
-                var tripName = $scope.trip.name;
-
-                ModalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
-                setTimeout(function () {
-                    var formContent = '<form ng-submit="postEditedTrip()">' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Nazwa</label>' +
-                        '<input class="input-control" type="text" ng-model="newName" id="name" value="' + tripName + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="description" ng-model="description">Opis</label>' +
-                        '<input class="input-control" type="text" ng-model="newDescription" id="description" value="' + $scope.trip.description + '"/>' +
-                        '</div>' +
-                        '<label class="control-label col-sm-4">Punkty</label>' +
-                        '<input ng-repeat="point in ' + $scope.trip.points + ' class="input-control" type="text" ng-model="description" id="description" value="point"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="startDate">Początek podróży</label>' +
-                        '<input class="input-control" type="date" ng-model="newStartDate" id="startDate" value="' + $scope.trip.startDate + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="endDate">Koniec podróży</label>' +
-                        '<input class="input-control" type="date" ng-model="newEndDate" id="endDate" value="' + $scope.trip.endDate + '"/>' +
-                        '</div>' +
-                        '<div class="col-sm-8 pull-left text-right">' +
-                        '<input type="submit" class="btn btn-default submit-button" value="Edytuj podróż">' +
-                        '</div>' +
-                        '</form>';
-                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
-                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
-                    var button = $('.submit-button')[0];
-                }, 500);
-
-            };
 
             $scope.postEditedTrip = function () {
                 var newStartDate;
@@ -126,21 +90,40 @@
                     endDate: newEndDate
                 };
 
-                ReportRemoteService.editTrip(editedTrip).then(function (results) {
-
-                });
+                ReportRemoteService.editTrip(editedTrip)
+                    .success(function (data, status, headers) {
+                        ModalService.confirmation('Sukces','Wycieczka edytowana pomyślnie!');
+                        console.log('Trip edited!');
+                        //alert("Wycieczka edytowana pomyślnie!");
+                    })
+                    .error(function (data, status, header, config) {
+                        ModalService.confirmation('Błąd', 'Edycja wycieczki nieudana!');
+                        console.log("Data: " + data +
+                            "\n\n\n\nstatus: " + status +
+                            "\n\n\n\nheaders: " + header +
+                            "\n\n\n\nconfig: " + config);
+                    });
             };
 
             $scope.addPoint = function (event, callback) {
+                var lat =  event.latLng.lat() || event.pixel.x;
+                var lng = event.latLng.lng() || event.pixel.y;
 
                 $scope.trip.points.push({
                     id: markerId,
                     timestamp: getTime(),
-                    elevation: "",
-                    latitude: event.latLng.lat(),
-                    longtitude: event.latLng.lng()
+                    elevation: 1,
+                    latitude: lat.toString().substring(0,11),
+                    longtitude: lng.toString().substring(0,11),
                 });
                 markerId++;
+                ReportRemoteService.editPoints($scope.trip)
+                    .success(function() {
+                        ModalService.confirmation('Sukces', 'Dodano nowy punkt!');
+                    })
+                    .error(function() {
+                        ModalService.confirmation('Bład', 'Nie dodano punktu!');
+                    });
             };
 
             $scope.removeMarker = function (event, pointId) {
@@ -149,6 +132,13 @@
 
             $scope.removePoint = function (pointId) {
                 lodash.remove($scope.trip.points, {id: pointId});
+                ReportRemoteService.editPoints($scope.trip)
+                    .success(function() {
+                        ModalService.confirmation('Sukces', 'Punkt usunięty pomyślnie!');
+                    })
+                    .error(function() {
+                        ModalService.confirmation('Błąd', 'Niepowodzenie edycji punktów');
+                    });
             };
 
             $scope.$watchCollection('trip.points', function () {
