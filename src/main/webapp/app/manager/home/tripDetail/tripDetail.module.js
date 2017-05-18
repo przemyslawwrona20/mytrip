@@ -3,6 +3,6 @@
 
     angular.module('mytrip.view.tripDetail', [
         'ui.router',
-        'mytrip.trip'
+        'mytrip.trip',
     ])
 })();

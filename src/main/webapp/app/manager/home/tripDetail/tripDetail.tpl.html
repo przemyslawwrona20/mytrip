@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <ng-map id="map" center="{{center}}" zoom="10" on-click="addPoint()">
+        <ng-map id="map" center="[52.222421,21.006185]" zoom="10" on-click="addPoint()">
             <marker ng-repeat="point in trip.points"
                     position="[{{point.latitude}}, {{point.longtitude}}]"
                     on-click="removeMarker(point.id)"

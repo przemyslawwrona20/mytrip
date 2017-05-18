@@ -536,10 +536,19 @@
 
     angular.module('mytrip.trip')
         .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
-            var HOST = 'http://40.69.212.228';
+            var HOST = 'http://40.69.212.228/';
             return {
                 uploadGpx: function(file,id) {
-                    //dopisać
+                    var fd = new FormData();
+                    console.log(file);
+                    fd.append('file', new Uint8Array(file));
+
+                    var url = HOST+'id/'+'uploadPath/';
+                    return $http.post(url,fd,{
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': 'application/json'}
+                    });
+
                 },
 
                 getTrips: function () {
@@ -630,7 +639,7 @@
 
     angular.module('mytrip.view.tripDetail', [
         'ui.router',
-        'mytrip.trip'
+        'mytrip.trip',
     ])
 })();
 (function () {
@@ -802,15 +811,30 @@
             }
 
             function calcCenter() {
-                var center = [0.0, 0.0];
-                lodash.forEach($scope.trip.points, function (point) {
-                    center[0] += Number(point.latitude);
-                    center[1] += Number(point.longtitude);
-                });
+                var center = [52.222421,21.006185];
+                if($scope.trip.points.length>0) {
+                    lodash.forEach($scope.trip.points, function (point) {
+                        center[0] += Number(point.latitude);
+                        center[1] += Number(point.longtitude);
+                    });
 
-                center[0] /= $scope.trip.points.length;
-                center[1] /= $scope.trip.points.length;
-                return center;
+                    center[0] /= $scope.trip.points.length;
+                    center[1] /= $scope.trip.points.length;
+                    return center;
+                }
+                else{
+                    if(navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            center[0]=position.coords.latitude;
+                            center[1]=position.coords.longitude;
+                            return center;
+                        });
+                    }
+                        else{
+                        center = [52.222421,21.006185];
+                        return center;
+                    }
+                }
             }
 
             function calcZoom() {

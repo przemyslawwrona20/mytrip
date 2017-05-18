@@ -3,10 +3,19 @@
 
     angular.module('mytrip.trip')
         .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
-            var HOST = 'http://40.69.212.228';
+            var HOST = 'http://40.69.212.228/';
             return {
                 uploadGpx: function(file,id) {
-                    //dopisać
+                    var fd = new FormData();
+                    console.log(file);
+                    fd.append('file', new Uint8Array(file));
+
+                    var url = HOST+'id/'+'uploadPath/';
+                    return $http.post(url,fd,{
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': 'application/json'}
+                    });
+
                 },
 
                 getTrips: function () {
