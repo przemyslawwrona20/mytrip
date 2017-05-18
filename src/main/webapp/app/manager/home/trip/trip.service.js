@@ -5,13 +5,12 @@
         .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
             var HOST = 'http://40.69.212.228';
             return {
-                uploadGpx: function(file) {
-                    var url = HOST + '/trips/100/uploadPath/';
+                uploadGpx: function(file,id) {
                     //dopisać
                 },
 
                 getTrips: function () {
-                    var url = HOST + '/trips/';
+                    var url = HOST + '/trips';
                     return $http.get(url);
                 },
                 getTrip: function (tripId) {
@@ -35,20 +34,36 @@
                         });
                 },
                 editTrip: function(editedTrip) {
-                    var url = HOST + '/trips/'+editedTrip.id +'/';
+                    var url = HOST + '/trips/'+ editedTrip.id +'/';
                     var postData = {
                         name: editedTrip.name,
                         description: editedTrip.description,
                         points: editedTrip.points,
                         media: [],
                         startDate: editedTrip.startDate,
-                        endDate: editedTrip.endDate,
+                        endDate: editedTrip.endDate
                     };
-                    return $http.put(url,postData)
-                        .success(function (data, status, headers) {
-                            modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
-                            console.log('Trip edited!');
-                            alert("Trip edited!");
+                    return $http.put(url,postData);
+                },
+                editPoints: function(trip) {
+                    var url = HOST + '/trips/'+trip.id +'/';
+                    var postData = {
+                        name: trip.name,
+                        description: trip.description,
+                        points: trip.points,
+                        media: [],
+                        startDate: trip.startDate,
+                        endDate: trip.endDate,
+                    };
+                    return $http.put(url,postData);
+                },
+                postTrip: function(trip) {
+                    var url = HOST + '/trips/';
+                    trip = angular.extend(trip, {points: [], media: []});
+                    return $http.post(url, trip)
+                        .success(function (data,status,headers) {
+                            //modalService.confirmation('','Wycieczka dodana pomyślnie!','sm');
+                            console.log('Sukces!');
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +
@@ -57,20 +72,13 @@
                                 "\n\n\n\nconfig: " + config);
                         });
                 },
-                postTrip: function(newTrip) {
-                    var url = HOST + '/trips/';
-                    var postData = {
-                        name: newTrip.name,
-                        description: newTrip.description,
-                        points: [],
-                        media: [],
-                        startDate: newTrip.startDate,
-                        endDate: newTrip.endDate,
-                    };
-                    return $http.post(url,postData)
+                uploadFile: function(uploadData) {
+                    var url = HOST + '/media/';
+                    return $http.put(url, uploadData)
                         .success(function (data, status, headers) {
-                            console.log('Trip added!');
-                            alert("New trip added!");
+                            modalService.confirmation('','Zdjęcie dodane pomyślnie!','sm');
+                            console.log('Sukces!');
+                            alert("Sukces!");
                         })
                         .error(function (data, status, header, config) {
                             console.log("Data: " + data +
