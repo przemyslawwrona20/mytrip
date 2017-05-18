@@ -493,9 +493,12 @@
             };
 
             $scope.uploadGpx= function(file){
-
-                ReportRemoteService.uploadGpx(file);
-            };
+                var json = $scope.trips;
+                var lastKey = Object.keys(json).sort().reverse()[0];
+                var lastElement = json[lastKey];
+                var id = lastElement.id + 1;
+                ReportRemoteService.uploadGpx(file,id);
+            }
 
             $scope.clearForm = function() {
                 $scope.name='';
@@ -535,8 +538,7 @@
         .factory('ReportRemoteService', ['$q', '$http','ModalService', function ($q, $http, $scope,modalService) {
             var HOST = 'http://40.69.212.228';
             return {
-                uploadGpx: function(file) {
-                    var url = HOST + '/trips/100/uploadPath/';
+                uploadGpx: function(file,id) {
                     //dopisać
                 },
 
@@ -574,18 +576,19 @@
                         startDate: editedTrip.startDate,
                         endDate: editedTrip.endDate
                     };
-                    return $http.put(url,postData)
-                        .success(function (data, status, headers) {
-                            //modalService.confirmation('','Wycieczka edytowana pomyślnie!','sm');
-                            console.log('Trip edited!');
-                            alert("Trip edited!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.put(url,postData);
+                },
+                editPoints: function(trip) {
+                    var url = HOST + '/trips/'+trip.id +'/';
+                    var postData = {
+                        name: trip.name,
+                        description: trip.description,
+                        points: trip.points,
+                        media: [],
+                        startDate: trip.startDate,
+                        endDate: trip.endDate,
+                    };
+                    return $http.put(url,postData);
                 },
                 postTrip: function(trip) {
                     var url = HOST + '/trips/';
@@ -644,6 +647,7 @@
             $scope.end = {};
             $scope.center = calcCenter();
             $scope.zoom = calcZoom();
+            $scope.sortedPoints= [];
 
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
@@ -696,42 +700,6 @@
                 ReportRemoteService.uploadFile(uploadData);
             };
 
-            $scope.editTrip = function () {
-                //modalService.open();
-                var tripName = $scope.trip.name;
-
-                ModalService.confirmation('Edytuj wycieczkę ' + tripName, '', 'md');
-                setTimeout(function () {
-                    var formContent = '<form ng-submit="postEditedTrip()">' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Nazwa</label>' +
-                        '<input class="input-control" type="text" ng-model="newName" id="name" value="' + tripName + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="description" ng-model="description">Opis</label>' +
-                        '<input class="input-control" type="text" ng-model="newDescription" id="description" value="' + $scope.trip.description + '"/>' +
-                        '</div>' +
-                        '<label class="control-label col-sm-4">Punkty</label>' +
-                        '<input ng-repeat="point in ' + $scope.trip.points + ' class="input-control" type="text" ng-model="description" id="description" value="point"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="startDate">Początek podróży</label>' +
-                        '<input class="input-control" type="date" ng-model="newStartDate" id="startDate" value="' + $scope.trip.startDate + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="endDate">Koniec podróży</label>' +
-                        '<input class="input-control" type="date" ng-model="newEndDate" id="endDate" value="' + $scope.trip.endDate + '"/>' +
-                        '</div>' +
-                        '<div class="col-sm-8 pull-left text-right">' +
-                        '<input type="submit" class="btn btn-default submit-button" value="Edytuj podróż">' +
-                        '</div>' +
-                        '</form>';
-                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
-                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
-                    var button = $('.submit-button')[0];
-                }, 500);
-
-            };
 
             $scope.postEditedTrip = function () {
                 var newStartDate;
@@ -757,21 +725,40 @@
                     endDate: newEndDate
                 };
 
-                ReportRemoteService.editTrip(editedTrip).then(function (results) {
-
-                });
+                ReportRemoteService.editTrip(editedTrip)
+                    .success(function (data, status, headers) {
+                        ModalService.confirmation('Sukces','Wycieczka edytowana pomyślnie!');
+                        console.log('Trip edited!');
+                        //alert("Wycieczka edytowana pomyślnie!");
+                    })
+                    .error(function (data, status, header, config) {
+                        ModalService.confirmation('Błąd', 'Edycja wycieczki nieudana!');
+                        console.log("Data: " + data +
+                            "\n\n\n\nstatus: " + status +
+                            "\n\n\n\nheaders: " + header +
+                            "\n\n\n\nconfig: " + config);
+                    });
             };
 
             $scope.addPoint = function (event, callback) {
+                var lat =  event.latLng.lat() || event.pixel.x;
+                var lng = event.latLng.lng() || event.pixel.y;
 
                 $scope.trip.points.push({
                     id: markerId,
                     timestamp: getTime(),
-                    elevation: "",
-                    latitude: event.latLng.lat(),
-                    longtitude: event.latLng.lng()
+                    elevation: 1,
+                    latitude: lat.toString().substring(0,11),
+                    longtitude: lng.toString().substring(0,11),
                 });
                 markerId++;
+                ReportRemoteService.editPoints($scope.trip)
+                    .success(function() {
+                        ModalService.confirmation('Sukces', 'Dodano nowy punkt!');
+                    })
+                    .error(function() {
+                        ModalService.confirmation('Bład', 'Nie dodano punktu!');
+                    });
             };
 
             $scope.removeMarker = function (event, pointId) {
@@ -780,36 +767,33 @@
 
             $scope.removePoint = function (pointId) {
                 lodash.remove($scope.trip.points, {id: pointId});
+                ReportRemoteService.editPoints($scope.trip)
+                    .success(function() {
+                        ModalService.confirmation('Sukces', 'Punkt usunięty pomyślnie!');
+                    })
+                    .error(function() {
+                        ModalService.confirmation('Błąd', 'Niepowodzenie edycji punktów');
+                    });
             };
 
             $scope.$watchCollection('trip.points', function () {
-                if ($scope.trip.points.length > 1) {
-                    $scope.start = $scope.trip.points[0];
-                    $scope.theWaypoints = [];
-                    if ($scope.trip.points.length > 1) {
-                        for (var i = 1; i < $scope.trip.points.length - 1; i++) {
-                            var latitude = $scope.trip.points[i].latitude;
-                            var longtitude = $scope.trip.points[i].longtitude;
-                            if (typeof latitude === "string" || latitude instanceof String) {
-                                latitude = parseFloat(latitude);
-                            }
-                            if (typeof longtitude === "string" || longtitude instanceof String) {
-                                longtitude = parseFloat(longtitude);
-                            }
-                            var obj = {
-                                location: {
-                                    lat: latitude,
-                                    lng: longtitude
-                                },
-                                stopover: false
-                            };
-                            $scope.theWaypoints.push(obj);
-                        }
+                $scope.sortedPoints=[];
+                var sorted = $scope.trip.points;
+                sorted.sort(function(a,b){
+                        if(a.timestamp < b.timestamp) return -1;
+                        if(a.timestamp > b.timestamp) return 1;
+                        return 0;
+                    });
+                for(var i = 0; i< sorted.length;i++){
+                    var latitude=sorted[i].latitude;
+                    var longtitude =sorted[i].longtitude;
+                    if(typeof latitude === "string" || latitude instanceof String) {
+                        latitude = parseFloat(latitude);
                     }
-                    $scope.end = $scope.trip.points[$scope.trip.points.length - 1];
-                } else {
-                    $scope.start = {};
-                    $scope.end = {};
+                    if(typeof longtitude === "string" || longtitude instanceof String) {
+                        longtitude = parseFloat(longtitude);
+                    }
+                    $scope.sortedPoints.push([latitude, longtitude]);
                 }
             });
             function getTime() {
@@ -852,6 +836,7 @@
             }
         }]);
 })();
+
 (function () {
     'use strict';
 
