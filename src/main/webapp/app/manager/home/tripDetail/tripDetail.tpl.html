@@ -76,4 +76,14 @@
     </form>
     </div>
     </div>
+
+    <p class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="opened"
+               datepicker-options="dateOptions" ng-required="true" close-text="Close"
+               alt-input-formats="altInputFormats"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="opened = !opened"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+    </p>
 </div>
