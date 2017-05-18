@@ -23,7 +23,9 @@
 
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
-                $state.go('app.home.trip')
+                ReportRemoteService.removeTrip(tripId).then(function (results) {
+                    $state.go('app.home.trip')
+                });
             };
 
             $scope.showMarkerDetails = function (event, pointId, tripId) {

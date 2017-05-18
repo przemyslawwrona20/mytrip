@@ -19,19 +19,7 @@
                 },
                 removeTrip: function (tripId) {
                     var url = HOST + '/trips/' + tripId;
-
-                    return $http.delete(url)
-                        .success(function () {
-                        console.log("Id: " + tripId + ' trip has been removed.');
-                        alert("Id: " + tripId + ' trip has been removed.');
-                    })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                            alert("Unable to remove trip - Id: " + tripId);
-                        });
+                    return $http.delete(url);
                 },
                 editTrip: function(editedTrip) {
                     var url = HOST + '/trips/'+ editedTrip.id +'/';
