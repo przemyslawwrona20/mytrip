@@ -486,8 +486,20 @@
                     startDate: $scope.startDate.toISOString().substring(0, 10),
                     endDate: $scope.endDate.toISOString().substring(0, 10)
                 };
-                ReportRemoteService.postTrip(newTrip).then(function(trip){
-                    $scope.trips.push(trip.data);
+                ReportRemoteService.postTrip(newTrip)
+                    .success(function (data,status,headers) {
+                        modalService.confirmation('Sukces','Wycieczka dodana pomyślnie!');
+                        console.log('Sukces!');
+                    })
+                    .error(function (data, status, header, config) {
+                        modalService.confirmation('Błąd','Nie udało się dodać wycieczki!');
+                        console.log("Data: " + data +
+                            "\n\n\n\nstatus: " + status +
+                            "\n\n\n\nheaders: " + header +
+                            "\n\n\n\nconfig: " + config);
+                    })
+                    .then(function(trip){
+                        $scope.trips.push(trip.data);
                 });
                 $scope.clearForm();
             };
@@ -506,6 +518,7 @@
                 $scope.startDate='';
                 $scope.endDate='';
             }
+
             }]);
 })();
 
@@ -590,17 +603,7 @@
                 postTrip: function(trip) {
                     var url = HOST + '/trips/';
                     trip = angular.extend(trip, {points: [], media: []});
-                    return $http.post(url, trip)
-                        .success(function (data,status,headers) {
-                            //modalService.confirmation('','Wycieczka dodana pomyślnie!','sm');
-                            console.log('Sukces!');
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    return $http.post(url, trip);
                 },
                 uploadFile: function(uploadData) {
                     var url = HOST + '/media/';

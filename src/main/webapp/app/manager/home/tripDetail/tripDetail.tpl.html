@@ -64,11 +64,27 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="startDate">Początek podróży</label>
-            <input class="form-control" type="date" ng-model="newStartDate" id="startDate" ng-value=trip.startDate>
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="openedStart"
+                   datepicker-options="dateOptions" ng-model="newStartDate" id="startDate" ng-value=trip.startDate close-text="Close"
+                   alt-input-formats="altInputFormats"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openedStart = !openedStart"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
         </div>
         <div class="form-group">
             <label class="control-label" for="endDate">Koniec podróży</label>
-            <input class="form-control" type="date" ng-model="newEndDate" id="endDate" ng-value=trip.endDate>
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="openedEnd"
+                       datepicker-options="dateOptions" ng-model="newEndDate" id="endDate" ng-value=trip.endDate close-text="Close"
+                       alt-input-formats="altInputFormats"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openedEnd = !openedEnd"><i
+                        class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-default w-full" value="Edytuj podróż">
@@ -76,14 +92,4 @@
     </form>
     </div>
     </div>
-
-    <p class="input-group">
-        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="opened"
-               datepicker-options="dateOptions" ng-required="true" close-text="Close"
-               alt-input-formats="altInputFormats"/>
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="opened = !opened"><i
-                    class="glyphicon glyphicon-calendar"></i></button>
-        </span>
-    </p>
 </div>

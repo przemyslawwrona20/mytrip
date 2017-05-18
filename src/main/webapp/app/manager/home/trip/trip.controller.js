@@ -28,8 +28,20 @@
                     startDate: $scope.startDate.toISOString().substring(0, 10),
                     endDate: $scope.endDate.toISOString().substring(0, 10)
                 };
-                ReportRemoteService.postTrip(newTrip).then(function(trip){
-                    $scope.trips.push(trip.data);
+                ReportRemoteService.postTrip(newTrip)
+                    .success(function (data,status,headers) {
+                        modalService.confirmation('Sukces','Wycieczka dodana pomyślnie!');
+                        console.log('Sukces!');
+                    })
+                    .error(function (data, status, header, config) {
+                        modalService.confirmation('Błąd','Nie udało się dodać wycieczki!');
+                        console.log("Data: " + data +
+                            "\n\n\n\nstatus: " + status +
+                            "\n\n\n\nheaders: " + header +
+                            "\n\n\n\nconfig: " + config);
+                    })
+                    .then(function(trip){
+                        $scope.trips.push(trip.data);
                 });
                 $scope.clearForm();
             };
@@ -48,5 +60,6 @@
                 $scope.startDate='';
                 $scope.endDate='';
             }
+
             }]);
 })();

@@ -14,10 +14,30 @@
                 <input class="form-control" type="text" ng-model="description" id="description"></div>
             <div class="form-group">
                 <label class="control-label" for="startDate">Początek podróży</label>
-                <input class="form-control" type="date" ng-model="startDate" id="startDate">            </div>
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="openedStart"
+                           datepicker-options="dateOptions" ng-model="startDate" id="startDate" close-text="Close"
+                           alt-input-formats="altInputFormats"
+                    />
+                    <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openedStart = !openedStart"><i
+                        class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                </p>
+            </div>
             <div class="form-group">
                 <label class="control-label" for="endDate">Koniec podróży</label>
-                <input class="form-control" type="date" ng-model="endDate" id="endDate">            </div>
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="openedEnd"
+                           datepicker-options="dateOptions" ng-model="endDate" id="endDate" close-text="Close"
+                           alt-input-formats="altInputFormats"
+                    />
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openedEnd = !openedEnd"><i
+                            class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-default w-full" value="Dodaj podróż">
             </div>
