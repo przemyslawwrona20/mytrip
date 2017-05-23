@@ -73,6 +73,10 @@
                                 "\n\n\n\nheaders: " + header +
                                 "\n\n\n\nconfig: " + config);
                         });
+                },
+                getMedia: function (tripId) {
+                    var url = HOST + '/trips/' + tripId;
+                    return $http.get(url);
                 }
             };
         }]);

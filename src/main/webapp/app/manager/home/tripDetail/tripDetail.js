@@ -27,46 +27,9 @@
                     $state.go('app.home.trip')
                 });
             };
-
-            $scope.showMarkerDetails = function (event, pointId, tripId) {
-
-                ModalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
-                setTimeout(function () {
-                    var formContent = '<div class="panel panel-default">' +
-                        '<div class="panel-body">' +
-                        '<form>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Id punktu</label>' +
-                        '<input class="input-control" disabled type="text" ng-model="pointId" id="name" value="' + pointId + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Id wycieczki</label>' +
-                        '<input class="input-control" disabled type="text" ng-model="tripId" id="name" value="' + tripId + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label for="myFileField">Wybierz plik: </label>' +
-                        '<input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>' +
-                        '</div>' +
-                        '<button ng-click="uploadFile()" class = "btn btn-primary submit-button">Upload File</button>' +
-                        '</form>' +
-                        '</div>' +
-                        '</div>';
-                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
-                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
-                    var button = $('.submit-button')[0];
-                }, 500);
-
+            $scope.showMarkerDetails = function (event, pointId, tripId, trip) {
+                ModalService.upload('Marker details nr: ' + pointId, '', 'md', pointId, tripId, trip);
             };
-
-            $scope.uploadFile = function () {
-                var uploadData = {
-                    point: $scope.pointId,
-                    trip: $scope.trip.id,
-                    content: $scope.myFile
-                };
-                ReportRemoteService.uploadFile(uploadData);
-            };
-
 
             $scope.postEditedTrip = function () {
                 var newStartDate;

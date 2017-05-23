@@ -1,0 +1,44 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title"><strong>{{header}}</strong> <span class="pull-right pointer"
+                                                                  ng-click="$dismiss()"><strong><i
+                class="fa fa-remove"></i></strong></span></h4>
+    </div>
+
+    <div class="modal-body">
+        {{body}}
+        <div class="panel panel-default">
+        <div class="panel-body">
+            <form ng-submit="TripDetailCtrl.uploadFile()">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" for="name">Id punktu</label>
+                    <input class="input-control" disabled type="text" ng-model="pointId" id="name" value="{{pointId}}"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" for="name">Id wycieczki</label>
+                    <input class="input-control" disabled type="text" ng-model="tripId" id="name" value="{{tripId}}"/>
+                </div>
+                <div class="form-group">
+                    <label for="myFileField">Wybierz plik: </label>
+                    <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
+                </div>
+                <input type="submit" class = "btn btn-primary submit-button" value="Upload File" />
+            </form>
+        </div>
+        </div>
+        <div class="gallery-header">
+            <h3>Marker gallery</h3>
+        </div>
+        <div class="container">
+            <div id="container" class="row gallery">
+                <div ng-repeat="content in media" class="gallery-item">
+                    <a href="{{content.content}}" target="_blank"><img src="{{content.content}}" /></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary m-t-md col-md-6" type="button" ng-click="$close()"><strong>OK</strong></button>
+            <button class="btn btn-dark m-t-md col-md-6" type="button" ng-click="$dismiss()"><strong>Cancel</strong></button>
+        </div>
+    </div>
+</div>
