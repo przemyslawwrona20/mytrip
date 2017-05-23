@@ -4,7 +4,7 @@
             <marker ng-repeat="point in trip.points"
                     position="[{{point.latitude}}, {{point.longtitude}}]"
                     on-click="removeMarker(point.id)"
-                    on-rightclick="showMarkerDetails(point.id, trip.id)"
+                    on-rightclick="showMarkerDetails(point.id, trip.id, trip.media)"
             ></marker>
             <shape name="polyline"
                    path="{{sortedPoints}}"
@@ -53,7 +53,7 @@
                     <h3 class="text-center">Edytuj podróż</h3>
                 </div>
             </div>
-    <form ng-submit="postEditedTrip()">
+    <form ng-submit="uploadFile()">
         <div class="form-group">
             <label class="control-label" for="name">Nazwa</label>
             <input class="form-control" type="text" minlength="3" ng-model="newName" id="name" ng-value=trip.name>
