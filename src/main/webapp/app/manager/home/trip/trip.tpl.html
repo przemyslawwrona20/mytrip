@@ -58,7 +58,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="trip in trips" ng-click="getDetails(trip.id)">
+            <tr ng-repeat="trip in filteredTrips" ng-click="getDetails(trip.id)">
                 <td>{{trip.name}}</td>
                 <td>{{trip.description}}</td>
                 <td>{{trip.points.length}}</td>
@@ -67,6 +67,15 @@
             </tr>
             </tbody>
         </table>
-
+        <ul uib-pagination total-items="totalItems"
+            ng-model="currentPage"
+            max-size="maxSize"
+            class="pagination-sm"
+            boundary-link-numbers="true"
+            rotate="false"
+            boundary-links="true"
+            items-per-page="numPerPage"
+            >
+        </ul>
     </div>
 </div>

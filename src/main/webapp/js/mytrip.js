@@ -443,6 +443,38 @@
                             $scope.body = body;
                         }]
                     });
+                },
+
+                upload: function (header, body,size, pointId, tripId, trip) {
+                    return $uibModal.open({
+                        animation: true,
+                        size: size,
+                        templateUrl: 'app/manager/home/tripDetail/uploadTemplate.tpl.html',
+                        resolve: {
+                            header: function () {
+                                return header;
+                            },
+                            body: function () {
+                                return body;
+                            },
+                            pointId: function (){
+                                return pointId;
+                            },
+                            tripId: function (){
+                                return tripId;
+                            },
+                            media: ['ReportRemoteService', function (ReportRemoteService) {
+                                return ReportRemoteService.getMedia(tripId);
+                            }]
+                        },
+                        controller: ['$scope', 'header', 'body', 'pointId', 'tripId', 'media', function ($scope, header, body, pointId, tripId, media) {
+                            $scope.header = header;
+                            $scope.body = body;
+                            $scope.pointId = pointId;
+                            $scope.tripId = tripId;
+                            $scope.media = media.data.media;
+                        }]
+                    });
                 }
             };
         }]);
@@ -462,6 +494,10 @@
     angular.module('mytrip.trip')
         .controller('TripCtrl', ['$scope', '$state', 'trips', 'ReportRemoteService',
             function ($scope, $state, trips, ReportRemoteService) {
+                $scope.filteredTrips = [],
+                $scope.currentPage = 1,
+                $scope.numPerPage = 10,
+                $scope.maxSize = 50,
 
             $scope.points = [{
                 id: 0,
@@ -474,10 +510,25 @@
             }];
 
             $scope.trips = trips.data.results;
+            if($scope.trips!==undefined) {
+                $scope.totalItems = $scope.trips.length;
+            }
+
 
             $scope.getDetails = function (tripId) {
                 $state.go('app.home.tripDetail', {tripId: tripId})
             };
+
+                $scope.numPages = function () {
+                    return Math.ceil($scope.todos.length / $scope.numPerPage);
+                };
+
+                $scope.$watch('currentPage + numPerPage', function() {
+                    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+                        , end = begin + $scope.numPerPage;
+
+                    $scope.filteredTrips = $scope.trips.slice(begin, end);
+                });
 
             $scope.postTrip = function() {
                 var newTrip = {
@@ -619,6 +670,10 @@
                                 "\n\n\n\nheaders: " + header +
                                 "\n\n\n\nconfig: " + config);
                         });
+                },
+                getMedia: function (tripId) {
+                    var url = HOST + '/trips/' + tripId;
+                    return $http.get(url);
                 }
             };
         }]);
@@ -662,46 +717,9 @@
                     $state.go('app.home.trip')
                 });
             };
-
-            $scope.showMarkerDetails = function (event, pointId, tripId) {
-
-                ModalService.confirmation('Szczegóły punktu nr: ' + pointId, '', 'md');
-                setTimeout(function () {
-                    var formContent = '<div class="panel panel-default">' +
-                        '<div class="panel-body">' +
-                        '<form>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Id punktu</label>' +
-                        '<input class="input-control" disabled type="text" ng-model="pointId" id="name" value="' + pointId + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label class="control-label col-sm-4" for="name">Id wycieczki</label>' +
-                        '<input class="input-control" disabled type="text" ng-model="tripId" id="name" value="' + tripId + '"/>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '<label for="myFileField">Wybierz plik: </label>' +
-                        '<input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>' +
-                        '</div>' +
-                        '<button ng-click="uploadFile()" class = "btn btn-primary submit-button">Upload File</button>' +
-                        '</form>' +
-                        '</div>' +
-                        '</div>';
-                    document.getElementsByClassName('modal-body')[0].innerHTML = formContent.toString();
-                    document.getElementsByClassName('modal-body')[0].style.height = "400px";
-                    var button = $('.submit-button')[0];
-                }, 500);
-
+            $scope.showMarkerDetails = function (event, pointId, tripId, trip) {
+                ModalService.upload('Marker details nr: ' + pointId, '', 'md', pointId, tripId, trip);
             };
-
-            $scope.uploadFile = function () {
-                var uploadData = {
-                    point: $scope.pointId,
-                    trip: $scope.trip.id,
-                    content: $scope.myFile
-                };
-                ReportRemoteService.uploadFile(uploadData);
-            };
-
 
             $scope.postEditedTrip = function () {
                 var newStartDate;
