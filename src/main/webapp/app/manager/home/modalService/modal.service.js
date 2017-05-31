@@ -24,7 +24,7 @@
                     });
                 },
 
-                upload: function (header, body,size, pointId, tripId, trip) {
+                upload: function (header, body,size, pointId, tripId, fileId, trip) {
                     return $uibModal.open({
                         animation: true,
                         size: size,
@@ -42,16 +42,35 @@
                             tripId: function (){
                                 return tripId;
                             },
+                            fileId: function (){
+                                return fileId;
+                            },
                             media: ['ReportRemoteService', function (ReportRemoteService) {
                                 return ReportRemoteService.getMedia(tripId);
                             }]
                         },
-                        controller: ['$scope', 'header', 'body', 'pointId', 'tripId', 'media', function ($scope, header, body, pointId, tripId, media) {
+                        controller: ['$scope', 'header', 'body', 'pointId', 'tripId', 'fileId', 'media', 'ReportRemoteService', function ($scope, header, body, pointId, tripId, fileId, media, ReportRemoteService) {
                             $scope.header = header;
                             $scope.body = body;
                             $scope.pointId = pointId;
                             $scope.tripId = tripId;
                             $scope.media = media.data.media;
+
+                            $scope.uploadFile = function () {
+                                var input = document.querySelector('input[type=file]'),
+                                    file = input.files[0];
+                                debugger;
+                                var data = {
+                                    trip: tripId,
+                                    content: file
+                                }
+                                debugger;
+                                ReportRemoteService.uploadFile(data).then(function () {
+                                    console.log("Upload successfull");
+                                }, function () {
+                                    console.log("Upload failed");
+                                });
+                            }
                         }]
                     });
                 }

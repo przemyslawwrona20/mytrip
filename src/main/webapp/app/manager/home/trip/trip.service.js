@@ -60,22 +60,17 @@
                     return $http.post(url, trip);
                 },
                 uploadFile: function(uploadData) {
-                    var url = HOST + '/media/';
-                    return $http.put(url, uploadData)
-                        .success(function (data, status, headers) {
-                            modalService.confirmation('','Zdjęcie dodane pomyślnie!','sm');
-                            console.log('Sukces!');
-                            alert("Sukces!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    var url = HOST + 'media/';
+                    var test = new FormData();
+                    test.append("trip", uploadData.trip);
+                    test.append("content", uploadData.content);
+                    return $http.post(url, test, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    })
                 },
                 getMedia: function (tripId) {
-                    var url = HOST + '/trips/' + tripId;
+                    var url = HOST + 'trips/' + tripId;
                     return $http.get(url);
                 }
             };

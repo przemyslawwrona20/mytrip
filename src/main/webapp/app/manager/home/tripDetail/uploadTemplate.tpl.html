@@ -20,9 +20,9 @@
                 </div>
                 <div class="form-group">
                     <label for="myFileField">Wybierz plik: </label>
-                    <input type="file" demo-file-model="myFile"  class="form-control" id ="myFileField"/>
+                    <input type="file" demo-file-model="myFile" ng-model="fileId"  class="form-control" id ="myFileField"/>
                 </div>
-                <input type="submit" class = "btn btn-primary submit-button" value="Upload File" />
+                <input type="submit" ng-click="uploadFile()" class = "btn btn-primary submit-button" value="Upload File" />
             </form>
         </div>
         </div>
