@@ -8,14 +8,13 @@
                 uploadGpx: function(file,id) {
                     var fd = new FormData();
                     console.log(file);
-                    fd.append('file', new Uint8Array(file));
+                    fd.append('file', file);
 
-                    var url = HOST+'id/'+'uploadPath/';
+                    var url = HOST + "trips/" + id + '/uploadPath';
                     return $http.post(url,fd,{
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': 'application/json'}
+                        headers: {'Content-Type': undefined},
+                        transformRequest: angular.identity
                     });
-
                 },
 
                 getTrips: function () {

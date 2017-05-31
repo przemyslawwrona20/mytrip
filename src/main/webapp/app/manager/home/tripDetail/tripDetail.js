@@ -21,6 +21,10 @@
                 }
             });
 
+            $scope.uploadGpx= function(file,tripId){
+                ReportRemoteService.uploadGpx(file,tripId);
+            };
+
             $scope.removeTrip = function (tripId) {
                 // ReportRemoteService.removeTrip(tripId)
                 ReportRemoteService.removeTrip(tripId).then(function (results) {
@@ -54,6 +58,8 @@
                     startDate: newStartDate,
                     endDate: newEndDate
                 };
+
+
 
                 ReportRemoteService.editTrip(editedTrip)
                     .success(function (data, status, headers) {
@@ -132,30 +138,34 @@
             }
 
             function calcCenter() {
-                var center = [52.222421,21.006185];
+                var center1 = [0,0];
+                var center;
                 if($scope.trip.points.length>0) {
                     lodash.forEach($scope.trip.points, function (point) {
                         center[0] += Number(point.latitude);
                         center[1] += Number(point.longtitude);
                     });
-
-                    center[0] /= $scope.trip.points.length;
-                    center[1] /= $scope.trip.points.length;
-                    return center;
+                    center1[0] /= $scope.trip.points.length;
+                    center1[1] /= $scope.trip.points.length;
+                    center=$.map(center1,function(value,index){
+                      return value;
+                    });
                 }
                 else{
+                    //to sie wykona pozniej
                     if(navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
-                            center[0]=position.coords.latitude;
-                            center[1]=position.coords.longitude;
-                            return center;
+                            center1[0]=position.coords.latitude;
+                            center1[1]=position.coords.longitude;
+                            center=$.map(center,function(value,index){
+                                return value;
+                            });
                         });
                     }
-                        else{
-                        center = [52.222421,21.006185];
-                        return center;
-                    }
                 }
+                //to sie wykona najpierw
+                console.log(center);
+                return center;
             }
 
             function calcZoom() {
