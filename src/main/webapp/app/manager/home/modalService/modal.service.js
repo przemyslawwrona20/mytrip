@@ -59,12 +59,10 @@
                             $scope.uploadFile = function () {
                                 var input = document.querySelector('input[type=file]'),
                                     file = input.files[0];
-                                debugger;
                                 var data = {
                                     trip: tripId,
                                     content: file
                                 }
-                                debugger;
                                 ReportRemoteService.uploadFile(data).then(function () {
                                     console.log("Upload successfull");
                                 }, function () {
