@@ -307,6 +307,7 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
+  width: 100%;
 }
 .img-rounded {
   border-radius: 6px;
@@ -12714,6 +12715,29 @@ fieldset[disabled] .btn-button.active {
   position: absolute;
   top: 0px;
   left: 0px;
+}
+ng-map {
+  cursor: default !important;
+}
+/* Image gallery */
+.gallery {
+  width: 558px;
+}
+.gallery-item {
+  width: 50%;
+  float: left;
+  height: 230px;
+  overflow: hidden;
+}
+.gallery-item img {
+  margin: 10px;
+}
+.img-responsive,
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  width: 100%;
 }
 body {
   font-family: 'WorkSans', sans-serif;
