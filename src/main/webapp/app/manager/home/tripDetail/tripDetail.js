@@ -13,6 +13,14 @@
             // $scope.zoom = calcZoom();
             $scope.sortedPoints= [];
 
+            $scope.poster = lodash.find($scope.trip.media, function(media) {
+                console.log(media.content_type == 'presentation');
+                return media.content_type == 'presentation';
+            });
+
+
+            console.log($scope.poster.content);
+
             NgMap.getMap().then(function (map) {
                 $scope.map = map;
                 if ($scope.trip.points.length > 0) {

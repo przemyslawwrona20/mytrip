@@ -16,10 +16,9 @@
         </ng-map>
     </div>
 </div>
-<!--<div>{{trip}}</div>-->
 <div class="row m-t">
     <div class="col-md-2 col-md-offset-6">
-        <a class="btn btn-info w-full" ng-click="downloadPoster()">Pobierz plakat</a>
+        <a class="btn btn-info w-full" ng-href="{{poster.content}}">Pobierz plakat</a>
     </div>
     <div class="col-md-2">
         <button type="button" class="btn btn-danger w-full" ng-click="removeTrip(trip.id)">Usuń wycieczkę</button>
@@ -30,6 +29,7 @@
         </button>
     </div>
 </div>
+<!--<div>{{trip.media}}</div>-->
 <div class="row">
     <div class="col-md-12">
         <table class="table table-striped">
