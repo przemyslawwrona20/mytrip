@@ -71,6 +71,10 @@
                 getMedia: function (tripId) {
                     var url = HOST + 'trips/' + tripId;
                     return $http.get(url);
+                },
+                downloadPoster: function (tripId) {
+                    var url = HOST + 'trips/' + tripId + '/poster';
+                    return $http.get(url);
                 }
             };
         }]);

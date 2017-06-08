@@ -4,14 +4,13 @@
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, ModalService) {
-
             $scope.trip = trip.data;
             var markerId = 0;
             $scope.start = {};
             $scope.theWaypoints = [];
             $scope.end = {};
-            $scope.center = calcCenter();
-            $scope.zoom = calcZoom();
+            // $scope.center = calcCenter();
+            // $scope.zoom = calcZoom();
             $scope.sortedPoints= [];
 
             NgMap.getMap().then(function (map) {
@@ -76,6 +75,10 @@
                     });
             };
 
+            $scope.downloadPoster = function() {
+                ReportRemoteService.downloadPoster($scope.trip.id);
+            };
+
             $scope.addPoint = function (event, callback) {
                 var lat =  event.latLng.lat() || event.pixel.x;
                 var lng = event.latLng.lng() || event.pixel.y;
@@ -138,32 +141,15 @@
             }
 
             function calcCenter() {
-                var center1 = [0,0];
-                var center;
-                if($scope.trip.points.length>0) {
-                    lodash.forEach($scope.trip.points, function (point) {
-                        center[0] += Number(point.latitude);
-                        center[1] += Number(point.longtitude);
-                    });
-                    center1[0] /= $scope.trip.points.length;
-                    center1[1] /= $scope.trip.points.length;
-                    center=$.map(center1,function(value,index){
-                      return value;
-                    });
-                }
-                else{
-                    //to sie wykona pozniej
-                    if(navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            center1[0]=position.coords.latitude;
-                            center1[1]=position.coords.longitude;
-                            center=$.map(center,function(value,index){
-                                return value;
-                            });
-                        });
-                    }
-                }
-                //to sie wykona najpierw
+                var center = [Number(trip.data.points[0].longtitude), Number(trip.data.points[0].latitude)];
+                // if($scope.trip.points.length>0) {
+                //     lodash.forEach($scope.trip.points, function (point) {
+                //         center[0] += Number(point.latitude);
+                //         center[1] += Number(point.longtitude);
+                //     });
+                //     center[0] /= $scope.trip.points.length;
+                //     center[1] /= $scope.trip.points.length;
+                // }
                 console.log(center);
                 return center;
             }

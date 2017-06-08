@@ -40,7 +40,8 @@ gulp.task('minify-js', function () {
             // 'src/main/webapp/vendor/ng-file-upload/ng-file-upload-all.js',
             'src/main/webapp/vendor/ng-file-upload/ng-file-upload-shim.js',
             'src/main/webapp/vendor/bootstrap-select/dist/js/bootstrap-select.js',
-            'src/main/webapp/vendor/ngmap/build/scripts/ng-map.min.js'
+            'src/main/webapp/vendor/ngmap/build/scripts/ng-map.min.js',
+            'src/main/webapp/vendor/angular-base64/angular-base64.js'
         ],
         jsDest = 'src/main/webapp/js';
 

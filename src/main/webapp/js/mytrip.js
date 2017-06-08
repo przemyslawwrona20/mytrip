@@ -16,11 +16,12 @@
         'xeditable',
         'ngLodash',
         'ngProgress',
-        'ngMap'
+        'ngMap',
+        'base64'
     ])
 
-        .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$urlMatcherFactoryProvider', '$locationProvider',
-            function config($stateProvider, $urlRouterProvider, $httpProvider, $urlMatcherFactoryProvider, $locationProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$urlMatcherFactoryProvider', '$locationProvider', '$base64',
+            function config($stateProvider, $urlRouterProvider, $httpProvider, $urlMatcherFactoryProvider, $locationProvider, $base64) {
 
                 // $urlRouterProvider.when('**', '/#/landing');
                 // $urlRouterProvider.when('/**', '/#/landing');
@@ -28,6 +29,8 @@
                 // $urlRouterProvider.otherwise('/#/landing');
 
                 // $urlMatcherFactoryProvider.strictMode(false);
+                var auth = $base64.encode("test:test1234");
+                $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + auth;
                 $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
                 // $httpProvider.defaults.withCredentials = true;
                 // $httpProvider.defaults.useXDomain = true;
@@ -445,7 +448,7 @@
                     });
                 },
 
-                upload: function (header, body,size, pointId, tripId, trip) {
+                upload: function (header, body,size, pointId, tripId, fileId, trip) {
                     return $uibModal.open({
                         animation: true,
                         size: size,
@@ -463,16 +466,33 @@
                             tripId: function (){
                                 return tripId;
                             },
+                            fileId: function (){
+                                return fileId;
+                            },
                             media: ['ReportRemoteService', function (ReportRemoteService) {
                                 return ReportRemoteService.getMedia(tripId);
                             }]
                         },
-                        controller: ['$scope', 'header', 'body', 'pointId', 'tripId', 'media', function ($scope, header, body, pointId, tripId, media) {
+                        controller: ['$scope', 'header', 'body', 'pointId', 'tripId', 'fileId', 'media', 'ReportRemoteService', function ($scope, header, body, pointId, tripId, fileId, media, ReportRemoteService) {
                             $scope.header = header;
                             $scope.body = body;
                             $scope.pointId = pointId;
                             $scope.tripId = tripId;
                             $scope.media = media.data.media;
+
+                            $scope.uploadFile = function () {
+                                var input = document.querySelector('input[type=file]'),
+                                    file = input.files[0];
+                                var data = {
+                                    trip: tripId,
+                                    content: file
+                                }
+                                ReportRemoteService.uploadFile(data).then(function () {
+                                    console.log("Upload successfull");
+                                }, function () {
+                                    console.log("Upload failed");
+                                });
+                            }
                         }]
                     });
                 }
@@ -650,22 +670,21 @@
                     return $http.post(url, trip);
                 },
                 uploadFile: function(uploadData) {
-                    var url = HOST + '/media/';
-                    return $http.put(url, uploadData)
-                        .success(function (data, status, headers) {
-                            modalService.confirmation('','Zdjęcie dodane pomyślnie!','sm');
-                            console.log('Sukces!');
-                            alert("Sukces!");
-                        })
-                        .error(function (data, status, header, config) {
-                            console.log("Data: " + data +
-                                "\n\n\n\nstatus: " + status +
-                                "\n\n\n\nheaders: " + header +
-                                "\n\n\n\nconfig: " + config);
-                        });
+                    var url = HOST + 'media/';
+                    var test = new FormData();
+                    test.append("trip", uploadData.trip);
+                    test.append("content", uploadData.content);
+                    return $http.post(url, test, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    })
                 },
                 getMedia: function (tripId) {
-                    var url = HOST + '/trips/' + tripId;
+                    var url = HOST + 'trips/' + tripId;
+                    return $http.get(url);
+                },
+                downloadPoster: function (tripId) {
+                    var url = HOST + 'trips/' + tripId + '/poster';
                     return $http.get(url);
                 }
             };
@@ -687,14 +706,13 @@
     angular.module('mytrip.view.tripDetail')
 
         .controller('TripDetailCtrl', ['$scope', '$state', 'ReportRemoteService', 'trip', 'lodash', 'NgMap', 'ModalService', function ($scope, $state, ReportRemoteService, trip, lodash, NgMap, ModalService) {
-
             $scope.trip = trip.data;
             var markerId = 0;
             $scope.start = {};
             $scope.theWaypoints = [];
             $scope.end = {};
-            $scope.center = calcCenter();
-            $scope.zoom = calcZoom();
+            // $scope.center = calcCenter();
+            // $scope.zoom = calcZoom();
             $scope.sortedPoints= [];
 
             NgMap.getMap().then(function (map) {
@@ -759,6 +777,10 @@
                     });
             };
 
+            $scope.downloadPoster = function() {
+                ReportRemoteService.downloadPoster($scope.trip.id);
+            };
+
             $scope.addPoint = function (event, callback) {
                 var lat =  event.latLng.lat() || event.pixel.x;
                 var lng = event.latLng.lng() || event.pixel.y;
@@ -821,32 +843,15 @@
             }
 
             function calcCenter() {
-                var center1 = [0,0];
-                var center;
-                if($scope.trip.points.length>0) {
-                    lodash.forEach($scope.trip.points, function (point) {
-                        center[0] += Number(point.latitude);
-                        center[1] += Number(point.longtitude);
-                    });
-                    center1[0] /= $scope.trip.points.length;
-                    center1[1] /= $scope.trip.points.length;
-                    center=$.map(center1,function(value,index){
-                      return value;
-                    });
-                }
-                else{
-                    //to sie wykona pozniej
-                    if(navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            center1[0]=position.coords.latitude;
-                            center1[1]=position.coords.longitude;
-                            center=$.map(center,function(value,index){
-                                return value;
-                            });
-                        });
-                    }
-                }
-                //to sie wykona najpierw
+                var center = [Number(trip.data.points[0].longtitude), Number(trip.data.points[0].latitude)];
+                // if($scope.trip.points.length>0) {
+                //     lodash.forEach($scope.trip.points, function (point) {
+                //         center[0] += Number(point.latitude);
+                //         center[1] += Number(point.longtitude);
+                //     });
+                //     center[0] /= $scope.trip.points.length;
+                //     center[1] /= $scope.trip.points.length;
+                // }
                 console.log(center);
                 return center;
             }

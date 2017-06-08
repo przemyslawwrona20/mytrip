@@ -16,11 +16,12 @@
         'xeditable',
         'ngLodash',
         'ngProgress',
-        'ngMap'
+        'ngMap',
+        'base64'
     ])
 
-        .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$urlMatcherFactoryProvider', '$locationProvider',
-            function config($stateProvider, $urlRouterProvider, $httpProvider, $urlMatcherFactoryProvider, $locationProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$urlMatcherFactoryProvider', '$locationProvider', '$base64',
+            function config($stateProvider, $urlRouterProvider, $httpProvider, $urlMatcherFactoryProvider, $locationProvider, $base64) {
 
                 // $urlRouterProvider.when('**', '/#/landing');
                 // $urlRouterProvider.when('/**', '/#/landing');
@@ -28,6 +29,8 @@
                 // $urlRouterProvider.otherwise('/#/landing');
 
                 // $urlMatcherFactoryProvider.strictMode(false);
+                var auth = $base64.encode("test:test1234");
+                $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + auth;
                 $httpProvider.defaults.headers.post['Content-Type'] = 'application/json';
                 // $httpProvider.defaults.withCredentials = true;
                 // $httpProvider.defaults.useXDomain = true;
